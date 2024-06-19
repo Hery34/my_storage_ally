@@ -1,42 +1,43 @@
 import 'package:my_storage_ally/database/box_fields.dart';
 
 class BoxModel {
-  final int? id;
-  final int boxNumber;
-  final int isFavorite;
-  final String createdTime;
+  late final int? idBox;
+  final String boxNumber;
+  final bool isFavorite;
+  final DateTime? createdTime;
 
   BoxModel({
-    this.id,
+    this.idBox,
     required this.boxNumber,
-    required this.isFavorite,
-    required this.createdTime,
+    this.isFavorite = false,
+    this.createdTime,
   });
 
   BoxModel copy({
-    int? id,
-    int? boxNumber,
-    int? isFavorite,
-    String? createdTime,
+    int? idBox,
+    String? boxNumber,
+    bool? isFavorite,
+    DateTime? createdTime,
   }) =>
       BoxModel(
-        id: id ?? this.id,
+        idBox: idBox ?? this.idBox,
         boxNumber: boxNumber ?? this.boxNumber,
         isFavorite: isFavorite ?? this.isFavorite,
         createdTime: createdTime ?? this.createdTime,
       );
 
-  Map<String, dynamic> toJson() => {
-        BoxFields.id: id,
+  Map<String, Object?> toJson() => {
+        BoxFields.id: idBox,
         BoxFields.boxNumber: boxNumber,
-        BoxFields.isFavorite: isFavorite,
-        BoxFields.createdTime: createdTime,
+        BoxFields.isFavorite: isFavorite ? 1 : 0,
+        BoxFields.createdTime: createdTime?.toIso8601String(),
       };
 
-  static BoxModel fromJson(Map<String, dynamic> json) => BoxModel(
-        id: json[BoxFields.id] as int?,
-        boxNumber: json[BoxFields.boxNumber] as int,
-        isFavorite: json[BoxFields.isFavorite] as int,
-        createdTime: json[BoxFields.createdTime] as String,
+  factory BoxModel.fromJson(Map<String, Object?> json) => BoxModel(
+        idBox: json[BoxFields.id] as int?,
+        boxNumber: json[BoxFields.boxNumber] as String,
+        isFavorite: json[BoxFields.isFavorite] == 1,
+        createdTime:
+            DateTime.tryParse(json[BoxFields.createdTime] as String? ?? ''),
       );
 }

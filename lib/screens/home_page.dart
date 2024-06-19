@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:my_storage_ally/screens/box_view.dart';
 import 'package:my_storage_ally/screens/item_view.dart';
 
 class HomePage extends StatelessWidget {
@@ -58,7 +57,11 @@ class HomePage extends StatelessWidget {
                     height: constraints.maxHeight / 2 - 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Action du bouton 2
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BoxView()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         elevation: 5,
@@ -71,7 +74,7 @@ class HomePage extends StatelessWidget {
                         children: <Widget>[
                           Icon(Icons.settings, size: 40),
                           Text(
-                            'Paramètres',
+                            'Cartons',
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 12),
                           ),

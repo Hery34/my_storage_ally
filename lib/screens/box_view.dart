@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
 import 'package:my_storage_ally/database/app_database.dart.dart';
-import 'package:my_storage_ally/database/item_database.dart';
-import 'package:my_storage_ally/models/item_model.dart';
-import 'package:my_storage_ally/screens/item_detail_view.dart';
+import 'package:my_storage_ally/database/box_database.dart';
+import 'package:my_storage_ally/database/box_fields.dart';
+import 'package:my_storage_ally/models/box_model.dart';
+import 'package:my_storage_ally/screens/box_detail_view.dart';
 
-class ItemView extends StatefulWidget {
-  const ItemView({super.key});
+class BoxView extends StatefulWidget {
+  const BoxView({super.key});
 
   @override
-  State<ItemView> createState() => _ItemViewState();
+  State<BoxView> createState() => _BoxViewState();
 }
 
-class _ItemViewState extends State<ItemView> {
-  final database = ItemDatabase(AppDatabase.instance);
-  List<ItemModel> items = [];
+class _BoxViewState extends State<BoxView> {
+  final database = BoxDatabase(AppDatabase.instance);
+  List<BoxModel> boxes = [];
 
   @override
   void initState() {
@@ -29,17 +30,17 @@ class _ItemViewState extends State<ItemView> {
 
   ///Gets all the notes from the database and updates the state
   refreshNotes() {
-    database.readAllItems().then((value) {
+    database.readAllBoxes().then((value) {
       setState(() {
-        items = value;
+        boxes = value;
       });
     });
   }
 
-  goToNoteDetailsView({int? id}) async {
+  goToBoxDetailsView({int? id}) async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ItemDetailView(itemId: id)),
+      MaterialPageRoute(builder: (context) => BoxDetailView(boxId: id)),
     );
     refreshNotes();
   }
@@ -59,17 +60,17 @@ class _ItemViewState extends State<ItemView> {
         ],
       ),
       body: Center(
-        child: items.isEmpty
+        child: boxes.isEmpty
             ? const Text(
-                "Vous n'avez aucun objet sauvegardé",
+                "Vous n'avez aucun carton sauvegardé",
                 style: TextStyle(color: Colors.white),
               )
             : ListView.builder(
-                itemCount: items.length,
+                itemCount: boxes.length,
                 itemBuilder: (context, index) {
-                  final item = items[index];
+                  final box = boxes[index];
                   return GestureDetector(
-                    onTap: () => goToNoteDetailsView(id: item.id),
+                    onTap: () => goToBoxDetailsView(id: box.idBox),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Card(
@@ -79,10 +80,10 @@ class _ItemViewState extends State<ItemView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(item.createdTime.toString())}',
+                                'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(box.createdTime.toString())}',
                               ),
                               Text(
-                                item.itemName,
+                                box.boxNumber.toString(),
                                 style:
                                     Theme.of(context).textTheme.headlineMedium,
                               ),
@@ -95,7 +96,7 @@ class _ItemViewState extends State<ItemView> {
                 }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: goToNoteDetailsView,
+        onPressed: goToBoxDetailsView,
         tooltip: 'Créer un nouvel article',
         child: const Icon(Icons.add),
       ),

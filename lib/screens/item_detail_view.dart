@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_storage_ally/database/app_database.dart.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 import 'package:my_storage_ally/models/item_model.dart';
 import 'package:my_storage_ally/screens/item_view.dart';
@@ -12,7 +13,7 @@ class ItemDetailView extends StatefulWidget {
 }
 
 class _ItemDetailViewState extends State<ItemDetailView> {
-  ItemDatabase database = ItemDatabase.instance;
+  final database = ItemDatabase(AppDatabase.instance);
 
   TextEditingController itemNameController = TextEditingController();
   TextEditingController itemNumberController = TextEditingController();
@@ -37,7 +38,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
       });
       return;
     }
-    database.read(widget.itemId!).then((value) {
+    database.readItem(widget.itemId!).then((value) {
       setState(() {
         item = value;
         itemNameController.text = item.itemName;
@@ -61,10 +62,10 @@ class _ItemDetailViewState extends State<ItemDetailView> {
       createdTime: DateTime.now(),
     );
     if (isNewItem) {
-      database.create(model);
+      database.createItem(model);
     } else {
       model.id = item.id;
-      database.update(model);
+      database.updateItem(model);
     }
     setState(() {
       isLoading = false;
@@ -75,7 +76,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
 
   ///Deletes the note from the database and navigates back to the previous screen
   deleteItem() {
-    database.delete(item.id!);
+    database.deleteItem(item.id!);
     Navigator.pop(context);
   }
 
