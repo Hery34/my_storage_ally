@@ -40,10 +40,10 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     }
     database.readItem(widget.itemId!).then((value) {
       setState(() {
-        item = value;
+        item = value!;
         itemNameController.text = item.itemName;
         itemNumberController.text = item.itemNumber.toString();
-        boxController.text = item.boxNumber.toString();
+        boxController.text = item.boxId.toString();
         isFavorite = item.isFavorite;
       });
     });
@@ -57,7 +57,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     final model = ItemModel(
       itemName: itemNameController.text,
       itemNumber: int.parse(itemNumberController.text),
-      boxNumber: int.parse(boxController.text),
+      boxId: int.parse(boxController.text),
       isFavorite: isFavorite,
       createdTime: DateTime.now(),
     );

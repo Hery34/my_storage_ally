@@ -26,12 +26,13 @@ class AppDatabase {
           ${ItemFields.id} ${ItemFields.idType},
           ${ItemFields.itemName} ${ItemFields.itemNameType},
           ${ItemFields.itemNumber} ${ItemFields.itemNumberType},
-          ${ItemFields.boxNumber} ${ItemFields.boxNumberType},
+          ${ItemFields.boxId} ${ItemFields.boxIdType},
           ${ItemFields.isFavorite} ${ItemFields.itemNumberType},
-          ${ItemFields.createdTime} ${ItemFields.itemNameType}
+          ${ItemFields.createdTime} ${ItemFields.itemNameType},
+          FOREIGN KEY (${ItemFields.boxId}) REFERENCES ${BoxFields.tableName} (${BoxFields.id}) ON DELETE CASCADE
         )
       ''');
-    return await db.execute('''
+    await db.execute('''
         CREATE TABLE ${BoxFields.tableName} (
           ${BoxFields.id} ${BoxFields.idBoxType},
           ${BoxFields.boxNumber} ${BoxFields.boxNumberType},
@@ -39,5 +40,10 @@ class AppDatabase {
           ${BoxFields.createdTime} ${BoxFields.createdTimeType}
         )
       ''');
+  }
+
+  Future close() async {
+    final db = await instance.database;
+    db.close();
   }
 }

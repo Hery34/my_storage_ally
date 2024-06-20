@@ -4,14 +4,14 @@ class ItemModel {
   late final int? id;
   final String itemName;
   final int itemNumber;
-  final int boxNumber;
+  final int? boxId;
   final bool isFavorite;
   final DateTime? createdTime;
   ItemModel({
     this.id,
     required this.itemName,
     required this.itemNumber,
-    required this.boxNumber,
+    required this.boxId,
     this.isFavorite = false,
     this.createdTime,
   });
@@ -20,7 +20,7 @@ class ItemModel {
         ItemFields.id: id,
         ItemFields.itemName: itemName,
         ItemFields.itemNumber: itemNumber,
-        ItemFields.boxNumber: boxNumber,
+        ItemFields.boxId: boxId,
         ItemFields.isFavorite: isFavorite ? 1 : 0,
         ItemFields.createdTime: createdTime?.toIso8601String(),
       };
@@ -29,7 +29,7 @@ class ItemModel {
         id: json[ItemFields.id] as int?,
         itemName: json[ItemFields.itemName] as String,
         itemNumber: json[ItemFields.itemNumber] as int,
-        boxNumber: json[ItemFields.boxNumber] as int,
+        boxId: json[ItemFields.boxId] as int?,
         isFavorite: json[ItemFields.isFavorite] == 1,
         createdTime:
             DateTime.tryParse(json[ItemFields.createdTime] as String? ?? ''),
@@ -39,7 +39,7 @@ class ItemModel {
     int? id,
     String? itemName,
     int? itemNumber,
-    int? boxNumber,
+    int? boxId,
     bool? isFavorite,
     DateTime? createdTime,
   }) =>
@@ -47,7 +47,7 @@ class ItemModel {
         id: id ?? this.id,
         itemName: itemName ?? this.itemName,
         itemNumber: itemNumber ?? this.itemNumber,
-        boxNumber: boxNumber ?? this.boxNumber,
+        boxId: boxId ?? this.boxId,
         isFavorite: isFavorite ?? this.isFavorite,
         createdTime: createdTime ?? this.createdTime,
       );

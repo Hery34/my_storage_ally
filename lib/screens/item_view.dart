@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
 import 'package:my_storage_ally/database/app_database.dart.dart';
 import 'package:my_storage_ally/database/item_database.dart';
+import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/models/item_model.dart';
 import 'package:my_storage_ally/screens/item_detail_view.dart';
 
@@ -14,6 +15,7 @@ class ItemView extends StatefulWidget {
 
 class _ItemViewState extends State<ItemView> {
   final database = ItemDatabase(AppDatabase.instance);
+  final databaseBox = BoxDatabase(AppDatabase.instance);
   List<ItemModel> items = [];
 
   @override
@@ -43,6 +45,11 @@ class _ItemViewState extends State<ItemView> {
     );
     refreshNotes();
   }
+
+   Future<String?> getBoxName(int id) async {
+    return await databaseBox.getBoxNameById(id);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +88,32 @@ class _ItemViewState extends State<ItemView> {
                               Text(
                                 'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(item.createdTime.toString())}',
                               ),
-                              Text(
-                                item.itemName,
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    item.itemName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
+                                  ),
+                                  FutureBuilder<String?>(
+                                future: getBoxName(item.boxId ?? 0),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    return const Text('Erreur');
+                                  } else {
+                                    return Text(
+                                      snapshot.data ?? 'Aucun carton',
+                                      style: Theme.of(context).textTheme.subtitle1,
+                                    );
+                                  }
+                                },
+                              ),
+                                ],
                               ),
                             ],
                           ),
