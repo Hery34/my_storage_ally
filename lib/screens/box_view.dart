@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart.dart';
 import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/database/box_fields.dart';
@@ -47,25 +48,34 @@ class _BoxViewState extends State<BoxView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      appBar: AppBar(
-        backgroundColor: Colors.black87,
-        foregroundColor: Colors.pinkAccent,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FloatingActionButton(
+                onPressed: goToBoxDetailsView,
+                tooltip: 'Créer un nouvel article',
+                child: const Icon(Icons.add),
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                "Créer un nouveau carton",
+                style: TextStyle(color: purpleSa),
+              )
+            ],
           ),
-        ],
-      ),
-      body: Center(
-        child: boxes.isEmpty
+        ),
+        boxes.isEmpty
             ? const Text(
                 "Vous n'avez aucun carton sauvegardé",
                 style: TextStyle(color: Colors.white),
               )
             : ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: boxes.length,
                 itemBuilder: (context, index) {
                   final box = boxes[index];
@@ -94,12 +104,7 @@ class _BoxViewState extends State<BoxView> {
                     ),
                   );
                 }),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: goToBoxDetailsView,
-        tooltip: 'Créer un nouvel article',
-        child: const Icon(Icons.add),
-      ),
+      ],
     );
   }
 }

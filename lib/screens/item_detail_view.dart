@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 import 'package:my_storage_ally/models/item_model.dart';
@@ -83,13 +84,13 @@ class _ItemDetailViewState extends State<ItemDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: graySA,
       appBar: AppBar(
-        foregroundColor: Colors.pinkAccent,
-        backgroundColor: Colors.black87,
+        foregroundColor: blueSa,
+        backgroundColor: graySA,
         actions: [
           IconButton(
-            color: Colors.pinkAccent,
+            color: blueSa,
             onPressed: () {
               setState(() {
                 isFavorite = !isFavorite;
@@ -106,7 +107,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
             ),
           ),
           IconButton(
-            color: Colors.white,
+            color: orangeSa,
             onPressed: createItem,
             icon: const Icon(Icons.save),
           ),
@@ -122,13 +123,13 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                     controller: itemNameController,
                     cursorColor: Colors.white,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: purpleSa,
                       fontSize: 20,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Désignation',
                       labelStyle: TextStyle(
-                        color: Colors.pinkAccent,
+                        color: blueSa,
                       ),
                     ),
                   ),
@@ -138,13 +139,13 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                     keyboardType: TextInputType.number,
                     cursorColor: Colors.white,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: purpleSa,
                       fontSize: 20,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Nombre',
                       labelStyle: TextStyle(
-                        color: Colors.pinkAccent,
+                        color: blueSa,
                       ),
                     ),
                   ),
@@ -154,13 +155,13 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                     keyboardType: TextInputType.number,
                     cursorColor: Colors.white,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: purpleSa,
                       fontSize: 20,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Carton n°',
                       labelStyle: TextStyle(
-                        color: Colors.pinkAccent,
+                        color: blueSa,
                       ),
                     ),
                   ),

@@ -1,90 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:my_storage_ally/screens/box_view.dart';
-import 'package:my_storage_ally/screens/item_view.dart';
+import 'package:my_storage_ally/providers/navigation_provider.dart';
+import 'package:my_storage_ally/constants/colors.dart';
+import 'package:my_storage_ally/utils/my_scaffold.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
+    final navigationProvider =
+        Provider.of<NavigationProvider>(context, listen: false);
+    final buttons = [
+      {
+        'icon': Icons.storage,
+        'label': 'Mes objets',
+        'color': purpleSa,
+        'index': 1,
+      },
+      {
+        'icon': Icons.inventory_2,
+        'label': 'Mes cartons',
+        'color': orangeSa,
+        'index': 2,
+      },
+      {
+        'icon': Icons.search,
+        'label': 'Rechercher',
+        'color': Colors.orangeAccent,
+        'index': 3,
+      },
+      {
+        'icon': Icons.qr_code,
+        'label': 'Générer un code QR',
+        'color': Colors.redAccent,
+        'index': 4,
+      },
+    ];
+
+    return MyScaffold(
       body: Center(
-        child: SizedBox(
-          width: 300,
-          height: 300,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(
-                    width: constraints.maxWidth / 2 - 50,
-                    height: constraints.maxHeight / 2 - 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ItemView()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.emoji_objects, size: 40),
-                          Text(
-                            'Mes objets',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.8,
+            maxHeight: MediaQuery.of(context).size.height * 0.6,
+          ),
+          child: GridView.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 16.0,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: buttons.map((button) {
+              return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(16.0),
+                  backgroundColor: button['color'] as Color,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                ),
+                onPressed: () {
+                  navigationProvider.setIndex(button['index'] as int);
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      button['icon'] as IconData,
+                      size: 48.0,
+                      color: Colors.white,
                     ),
-                  ),
-                  const SizedBox(
-                    width: 50,
-                    height: 50,
-                  ),
-                  SizedBox(
-                    width: constraints.maxWidth / 2 - 50,
-                    height: constraints.maxHeight / 2 - 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BoxView()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.settings, size: 40),
-                          Text(
-                            'Cartons',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
+                    Text(
+                      button['label'] as String,
+                      style:
+                          const TextStyle(fontSize: 18.0, color: Colors.white),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
-            },
+            }).toList(),
           ),
         ),
       ),

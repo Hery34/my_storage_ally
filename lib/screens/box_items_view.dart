@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 import 'package:my_storage_ally/models/item_model.dart';
 
@@ -12,8 +13,13 @@ class BoxItemsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: graySA,
       appBar: AppBar(
-        title: const Text('Items in Box'),
+        foregroundColor: blueSa,
+        title: const Text(
+          'Contenu de votre carton',
+          style: TextStyle(color: blueSa),
+        ),
       ),
       body: FutureBuilder<List<ItemModel>>(
         future: itemDatabase.readItemsByBoxId(boxId),
@@ -31,8 +37,15 @@ class BoxItemsView extends StatelessWidget {
               itemBuilder: (context, index) {
                 final item = items[index];
                 return ListTile(
-                  title: Text(item.itemName),
-                  subtitle: Text('Nombre : ${item.itemNumber}'),
+                  style: ListTileStyle.list,
+                  title: Text(
+                    item.itemName,
+                    style: const TextStyle(fontSize: 20, color: blueSa),
+                  ),
+                  subtitle: Text(
+                    'Nombre : ${item.itemNumber}',
+                    style: const TextStyle(fontSize: 14, color: orangeSa),
+                  ),
                 );
               },
             );

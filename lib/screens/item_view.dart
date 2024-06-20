@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/models/item_model.dart';
 import 'package:my_storage_ally/screens/item_detail_view.dart';
+import 'package:my_storage_ally/utils/my_scaffold.dart';
 
 class ItemView extends StatefulWidget {
   const ItemView({super.key});
@@ -46,32 +49,45 @@ class _ItemViewState extends State<ItemView> {
     refreshNotes();
   }
 
-   Future<String?> getBoxName(int id) async {
+  Future<String?> getBoxName(int id) async {
     return await databaseBox.getBoxNameById(id);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      appBar: AppBar(
-        backgroundColor: Colors.black87,
-        foregroundColor: Colors.pinkAccent,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FloatingActionButton(
+                onPressed: goToNoteDetailsView,
+                tooltip: 'Créer un nouvel article',
+                child: const Icon(Icons.add),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              const Text(
+                "Ajouter un objet",
+                style: TextStyle(color: purpleSa),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: Center(
-        child: items.isEmpty
-            ? const Text(
-                "Vous n'avez aucun objet sauvegardé",
-                style: TextStyle(color: Colors.white),
+        ),
+        items.isEmpty
+            ? const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  "Vous n'avez aucun objet sauvegardé",
+                  style: TextStyle(color: Colors.white),
+                ),
               )
             : ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   final item = items[index];
@@ -99,20 +115,23 @@ class _ItemViewState extends State<ItemView> {
                                         .headlineMedium,
                                   ),
                                   FutureBuilder<String?>(
-                                future: getBoxName(item.boxId ?? 0),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return const CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    return const Text('Erreur');
-                                  } else {
-                                    return Text(
-                                      snapshot.data ?? 'Aucun carton',
-                                      style: Theme.of(context).textTheme.subtitle1,
-                                    );
-                                  }
-                                },
-                              ),
+                                    future: getBoxName(item.boxId ?? 0),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        return const Text('Erreur');
+                                      } else {
+                                        return Text(
+                                          snapshot.data ?? 'Aucun carton',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1,
+                                        );
+                                      }
+                                    },
+                                  ),
                                 ],
                               ),
                             ],
@@ -121,13 +140,9 @@ class _ItemViewState extends State<ItemView> {
                       ),
                     ),
                   );
-                }),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: goToNoteDetailsView,
-        tooltip: 'Créer un nouvel article',
-        child: const Icon(Icons.add),
-      ),
+                },
+              ),
+      ],
     );
   }
 }

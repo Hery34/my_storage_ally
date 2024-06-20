@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart.dart';
 import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/database/item_database.dart';
@@ -91,13 +92,13 @@ class _BoxDetailViewState extends State<BoxDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: graySA,
       appBar: AppBar(
-        foregroundColor: Colors.pinkAccent,
-        backgroundColor: Colors.black87,
+        foregroundColor: blueSa,
+        backgroundColor: graySA,
         actions: [
           IconButton(
-            color: Colors.pinkAccent,
+            color: blueSa,
             onPressed: () {
               setState(() {
                 isFavorite = !isFavorite;
@@ -114,7 +115,7 @@ class _BoxDetailViewState extends State<BoxDetailView> {
             ),
           ),
           IconButton(
-            color: Colors.white,
+            color: orangeSa,
             onPressed: createBox,
             icon: const Icon(Icons.save),
           ),
@@ -130,13 +131,13 @@ class _BoxDetailViewState extends State<BoxDetailView> {
                     controller: boxNumberController,
                     cursorColor: Colors.white,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: purpleSa,
                       fontSize: 20,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Référence',
                       labelStyle: TextStyle(
-                        color: Colors.pinkAccent,
+                        color: blueSa,
                       ),
                     ),
                   ),
