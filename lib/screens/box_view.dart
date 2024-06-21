@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
 import 'package:my_storage_ally/constants/colors.dart';
-import 'package:my_storage_ally/database/app_database.dart.dart';
+import 'package:my_storage_ally/database/app_database.dart';
 import 'package:my_storage_ally/database/box_database.dart';
-import 'package:my_storage_ally/database/box_fields.dart';
 import 'package:my_storage_ally/models/box_model.dart';
+import 'package:my_storage_ally/screens/box_create_view.dart';
 import 'package:my_storage_ally/screens/box_detail_view.dart';
 
 class BoxView extends StatefulWidget {
@@ -38,7 +38,15 @@ class _BoxViewState extends State<BoxView> {
     });
   }
 
-  goToBoxDetailsView({int? id}) async {
+  goToCreateBoxView({int? id}) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => BoxCreateView(boxId: id)),
+    );
+    refreshNotes();
+  }
+
+  goToBoxDetailView({int? id}) async {
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => BoxDetailView(boxId: id)),
@@ -55,23 +63,30 @@ class _BoxViewState extends State<BoxView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FloatingActionButton(
-                onPressed: goToBoxDetailsView,
-                tooltip: 'Créer un nouvel article',
-                child: const Icon(Icons.add),
+              const SizedBox(
+                width: 50,
               ),
-              const SizedBox(width: 8),
-              const Text(
-                "Créer un nouveau carton",
-                style: TextStyle(color: purpleSa),
-              )
+              FloatingActionButton.extended(
+                onPressed: () => goToCreateBoxView(),
+                icon: const Icon(Icons.add),
+                label: const Text("Ajouter un Carton"),
+                backgroundColor: orangeSa,
+              ),
+              const SizedBox(
+                width: 50,
+              ),
             ],
           ),
         ),
         boxes.isEmpty
-            ? const Text(
-                "Vous n'avez aucun carton sauvegardé",
-                style: TextStyle(color: Colors.white),
+            ? const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "Vous n'avez aucun carton sauvegardé",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
               )
             : ListView.builder(
                 shrinkWrap: true,
@@ -80,7 +95,7 @@ class _BoxViewState extends State<BoxView> {
                 itemBuilder: (context, index) {
                   final box = boxes[index];
                   return GestureDetector(
-                    onTap: () => goToBoxDetailsView(id: box.idBox),
+                    onTap: () => goToBoxDetailView(id: box.idBox),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Card(
@@ -90,7 +105,7 @@ class _BoxViewState extends State<BoxView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(box.createdTime.toString())}',
+                                'Carton ajouté le : ${FrenchDateFormatter.formatDateFR(box.createdTime.toString())}',
                               ),
                               Text(
                                 box.boxNumber.toString(),

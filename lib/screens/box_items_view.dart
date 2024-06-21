@@ -15,9 +15,10 @@ class BoxItemsView extends StatelessWidget {
     return Scaffold(
       backgroundColor: graySA,
       appBar: AppBar(
+        backgroundColor: graySA,
         foregroundColor: blueSa,
         title: const Text(
-          'Contenu de votre carton',
+          'Contenu du carton',
           style: TextStyle(color: blueSa),
         ),
       ),
@@ -36,15 +37,20 @@ class BoxItemsView extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index];
-                return ListTile(
-                  style: ListTileStyle.list,
-                  title: Text(
-                    item.itemName,
-                    style: const TextStyle(fontSize: 20, color: blueSa),
-                  ),
-                  subtitle: Text(
-                    'Nombre : ${item.itemNumber}',
-                    style: const TextStyle(fontSize: 14, color: orangeSa),
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    child: ListTile(
+                      style: ListTileStyle.list,
+                      title: Text(
+                        item.itemName,
+                        style: const TextStyle(fontSize: 20, color: blueSa),
+                      ),
+                      subtitle: Text(
+                        'Nombre : ${item.itemNumber}',
+                        style: const TextStyle(fontSize: 14, color: orangeSa),
+                      ),
+                    ),
                   ),
                 );
               },

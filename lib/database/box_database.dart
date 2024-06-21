@@ -1,4 +1,4 @@
-import 'package:my_storage_ally/database/app_database.dart.dart';
+import 'package:my_storage_ally/database/app_database.dart';
 import 'package:my_storage_ally/models/box_model.dart';
 import 'package:my_storage_ally/database/box_fields.dart';
 
@@ -62,7 +62,7 @@ class BoxDatabase {
     }
   }
 
-   Future<String?> getBoxNameById(int id) async {
+  Future<String?> getBoxNameById(int id) async {
     final db = await _database.database;
     final maps = await db.query(
       BoxFields.tableName,

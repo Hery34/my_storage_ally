@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
 import 'package:my_storage_ally/constants/colors.dart';
-import 'package:my_storage_ally/database/app_database.dart.dart';
+import 'package:my_storage_ally/database/app_database.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/models/item_model.dart';
 import 'package:my_storage_ally/screens/item_detail_view.dart';
-import 'package:my_storage_ally/utils/my_scaffold.dart';
+import 'package:my_storage_ally/screens/item_create_view.dart';
+import 'package:my_storage_ally/widgets/search_item_dialog.dart';
 
 class ItemView extends StatefulWidget {
   const ItemView({super.key});
@@ -41,7 +41,22 @@ class _ItemViewState extends State<ItemView> {
     });
   }
 
-  goToNoteDetailsView({int? id}) async {
+  void showSearchDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SearchItemDialog(database: database),
+    );
+  }
+
+  goToCreateItemView({int? id}) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ItemCreateView(itemId: id)),
+    );
+    refreshNotes();
+  }
+
+  goToItemDetailView({int? id}) async {
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ItemDetailView(itemId: id)),
@@ -60,29 +75,32 @@ class _ItemViewState extends State<ItemView> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              FloatingActionButton(
-                onPressed: goToNoteDetailsView,
-                tooltip: 'Créer un nouvel article',
-                child: const Icon(Icons.add),
+              FloatingActionButton.extended(
+                onPressed: () => goToCreateItemView(),
+                icon: const Icon(Icons.add),
+                label: const Text("Ajouter un Objet"),
+                backgroundColor: orangeSa,
               ),
-              const SizedBox(
-                width: 8,
-              ),
-              const Text(
-                "Ajouter un objet",
-                style: TextStyle(color: purpleSa),
-              ),
+              IconButton(
+                  iconSize: 45,
+                  onPressed: showSearchDialog,
+                  icon: const Icon(
+                    Icons.search,
+                    color: orangeSa,
+                  ))
             ],
           ),
         ),
         items.isEmpty
             ? const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Vous n'avez aucun objet sauvegardé",
-                  style: TextStyle(color: Colors.white),
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "Vous n'avez aucun objet sauvegardé",
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
               )
             : ListView.builder(
@@ -92,7 +110,7 @@ class _ItemViewState extends State<ItemView> {
                 itemBuilder: (context, index) {
                   final item = items[index];
                   return GestureDetector(
-                    onTap: () => goToNoteDetailsView(id: item.id),
+                    onTap: () => goToItemDetailView(id: item.id),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Card(
@@ -108,11 +126,17 @@ class _ItemViewState extends State<ItemView> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    item.itemName,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.6,
+                                    child: Text(
+                                      item.itemName,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium,
+                                    ),
                                   ),
                                   FutureBuilder<String?>(
                                     future: getBoxName(item.boxId ?? 0),
@@ -127,7 +151,7 @@ class _ItemViewState extends State<ItemView> {
                                           snapshot.data ?? 'Aucun carton',
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle1,
+                                              .titleMedium,
                                         );
                                       }
                                     },

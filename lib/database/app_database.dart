@@ -36,6 +36,7 @@ class AppDatabase {
         CREATE TABLE ${BoxFields.tableName} (
           ${BoxFields.id} ${BoxFields.idBoxType},
           ${BoxFields.boxNumber} ${BoxFields.boxNumberType},
+          ${BoxFields.boxDescription} ${BoxFields.boxDescriptionType},
           ${BoxFields.isFavorite} ${BoxFields.boxNumberType},
           ${BoxFields.createdTime} ${BoxFields.createdTimeType}
         )

@@ -1,5 +1,5 @@
 import 'package:my_storage_ally/database/box_database.dart';
-import 'package:my_storage_ally/database/app_database.dart.dart';
+import 'package:my_storage_ally/database/app_database.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 
 class DatabaseService {

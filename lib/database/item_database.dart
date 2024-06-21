@@ -1,4 +1,4 @@
-import 'package:my_storage_ally/database/app_database.dart.dart';
+import 'package:my_storage_ally/database/app_database.dart';
 import 'package:my_storage_ally/database/item_fields.dart';
 import 'package:my_storage_ally/models/item_model.dart';
 
@@ -68,5 +68,15 @@ class ItemDatabase {
       where: '${ItemFields.id} = ?',
       whereArgs: [itemId],
     );
+  }
+
+  Future<List<ItemModel>> searchItems(String query) async {
+    final db = await _database.database;
+    final result = await db.query(
+      'items',
+      where: 'item_name LIKE ?',
+      whereArgs: ['%$query%'],
+    );
+    return result.map((json) => ItemModel.fromJson(json)).toList();
   }
 }

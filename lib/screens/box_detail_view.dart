@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_storage_ally/constants/colors.dart';
-import 'package:my_storage_ally/database/app_database.dart.dart';
+import 'package:my_storage_ally/database/app_database.dart';
 import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 import 'package:my_storage_ally/models/box_model.dart';
 import 'package:my_storage_ally/screens/box_items_view.dart';
-import 'package:my_storage_ally/screens/box_view.dart';
+import 'package:my_storage_ally/widgets/edit_box_dialog.dart';
 
 class BoxDetailView extends StatefulWidget {
   const BoxDetailView({super.key, this.boxId});
@@ -17,62 +17,30 @@ class BoxDetailView extends StatefulWidget {
 
 class _BoxDetailViewState extends State<BoxDetailView> {
   final database = BoxDatabase(AppDatabase.instance);
-  TextEditingController boxNumberController = TextEditingController();
-
-  late BoxModel box;
-  bool isLoading = false;
-  bool isNewBox = false;
-  bool isFavorite = false;
-
   final itemDatabase = ItemDatabase(AppDatabase.instance);
+  late BoxModel box;
+  bool isLoading = true;
 
   @override
   void initState() {
-    refreshBoxes();
     super.initState();
+    refreshBoxes();
   }
 
-  refreshBoxes() {
-    if (widget.boxId == null) {
+  refreshBoxes() async {
+    if (widget.boxId != null) {
+      box = (await database.readBox(widget.boxId!));
       setState(() {
-        isNewBox = true;
+        isLoading = false;
       });
-      return;
     }
-    database.readBox(widget.boxId!).then((value) {
-      setState(() {
-        box = value;
-        boxNumberController.text = box.boxNumber.toString();
-        isFavorite = box.isFavorite;
-      });
-    });
   }
 
-  createBox() {
-    setState(() {
-      isLoading = true;
-    });
-    final model = BoxModel(
-      boxNumber: (boxNumberController.text),
-      isFavorite: isFavorite,
-      createdTime: DateTime.now(),
+  void showEditDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => EditBoxDialog(box: box, onBoxUpdated: refreshBoxes),
     );
-    if (isNewBox) {
-      database.createBox(model);
-    } else {
-      model.idBox = box.idBox;
-      database.updateBox(model);
-    }
-    setState(() {
-      isLoading = false;
-    });
-    Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => const BoxView()));
-  }
-
-  deleteItem() {
-    database.deleteBox(box.idBox!);
-    Navigator.pop(context);
   }
 
   goToBoxContentView(int? boxId) async {
@@ -94,59 +62,52 @@ class _BoxDetailViewState extends State<BoxDetailView> {
     return Scaffold(
       backgroundColor: graySA,
       appBar: AppBar(
+        title: const Text('Détails'),
         foregroundColor: blueSa,
         backgroundColor: graySA,
         actions: [
           IconButton(
-            color: blueSa,
+            icon: const Icon(Icons.edit, color: orangeSa),
             onPressed: () {
-              setState(() {
-                isFavorite = !isFavorite;
-              });
+              showEditDialog();
             },
-            icon: Icon(!isFavorite ? Icons.favorite_border : Icons.favorite),
-          ),
-          Visibility(
-            visible: !isNewBox,
-            child: IconButton(
-              color: Colors.red,
-              onPressed: deleteItem,
-              icon: const Icon(Icons.delete),
-            ),
-          ),
-          IconButton(
-            color: orangeSa,
-            onPressed: createBox,
-            icon: const Icon(Icons.save),
           ),
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Column(children: [
-                  TextField(
-                    controller: boxNumberController,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: purpleSa,
-                      fontSize: 20,
-                    ),
-                    decoration: const InputDecoration(
-                      labelText: 'Référence',
-                      labelStyle: TextStyle(
-                        color: blueSa,
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Card(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: const Text('Référence',
+                                style: TextStyle(color: blueSa)),
+                            subtitle: Text(box.boxNumber,
+                                style: const TextStyle(
+                                    color: purpleSa, fontSize: 20)),
+                          ),
+                          ListTile(
+                            title: const Text('Description',
+                                style: TextStyle(color: blueSa)),
+                            subtitle: Text(box.boxDescription,
+                                style: const TextStyle(
+                                    color: purpleSa, fontSize: 20)),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                      onPressed: () => goToBoxContentView(widget.boxId),
-                      child: const Text("Voir le contenu du carton"))
-                ]),
-        ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                        onPressed: () => goToBoxContentView(widget.boxId),
+                        child: const Text("Voir le contenu du carton"))
+                  ],
+                ),
+              ),
       ),
     );
   }
