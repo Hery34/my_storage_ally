@@ -48,6 +48,7 @@ class EditBoxDialogState extends State<EditBoxDialog> {
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
+        backgroundColor: orangeSa,
         content: Text(
           'Objet mis à jour !',
           style: TextStyle(color: Colors.white),

@@ -67,8 +67,10 @@ class _BoxCreateViewState extends State<BoxCreateView> {
     setState(() {
       isLoading = false;
     });
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
+        backgroundColor: orangeSa,
         content: Text(
           'Carton rajouté !',
           style: TextStyle(color: Colors.white),

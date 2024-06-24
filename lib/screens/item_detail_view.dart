@@ -28,7 +28,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
 
   refreshItems() async {
     if (widget.itemId != null) {
-      item = (await database.readItem(widget.itemId!))!;
+      item = (await database.readItem(widget.itemId ?? 0))!;
       setState(() {
         isLoading = false;
       });
@@ -43,6 +43,20 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     );
   }
 
+  void deleteItem() {
+    database.deleteItem(item.id!);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: orangeSa,
+        content: Text(
+          'Objet supprimé !',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +66,12 @@ class _ItemDetailViewState extends State<ItemDetailView> {
         foregroundColor: blueSa,
         backgroundColor: graySA,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.delete, color: orangeSa),
+            onPressed: () {
+              deleteItem();
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.edit, color: orangeSa),
             onPressed: () {

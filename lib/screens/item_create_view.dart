@@ -81,8 +81,11 @@ class _ItemCreateViewState extends State<ItemCreateView> {
     setState(() {
       isLoading = false;
     });
+    Navigator.pop(context);
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
+        backgroundColor: orangeSa,
         content: Text(
           'Objet rajouté !',
           style: TextStyle(color: Colors.white),

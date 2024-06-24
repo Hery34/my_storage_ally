@@ -59,9 +59,9 @@ class EditItemDialogState extends State<EditItemDialog> {
       isLoading = false;
     });
     widget.onItemUpdated();
-    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
+        backgroundColor: orangeSa,
         content: Text(
           'Objet mis à jour !',
           style: TextStyle(color: Colors.white),

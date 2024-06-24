@@ -57,6 +57,46 @@ class _BoxDetailViewState extends State<BoxDetailView> {
     refreshBoxes();
   }
 
+  void deleteBox() {
+    database.deleteBox(box.idBox!);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: orangeSa,
+        content: Text(
+          'Carton supprimé !',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  confirmDelete() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Supprimer le carton'),
+        content: const Text(
+            "Cette action est irréversible. Si vous souhaitez continuer, assurez-vous d'avoir transféré vos objets, sinon ils se retrouveront sans carton"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              deleteBox();
+            },
+            child: const Text('Supprimer'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +106,12 @@ class _BoxDetailViewState extends State<BoxDetailView> {
         foregroundColor: blueSa,
         backgroundColor: graySA,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.delete, color: orangeSa),
+            onPressed: () {
+              confirmDelete();
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.edit, color: orangeSa),
             onPressed: () {
