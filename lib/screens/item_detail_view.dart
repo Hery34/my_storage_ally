@@ -48,7 +48,6 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        backgroundColor: orangeSa,
         content: Text(
           'Objet supprimé !',
           style: TextStyle(color: Colors.white),

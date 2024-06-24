@@ -45,7 +45,7 @@ class EditBoxDialogState extends State<EditBoxDialog> {
       isLoading = false;
     });
     widget.onBoxUpdated();
-    Navigator.pop(context);
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         backgroundColor: orangeSa,
