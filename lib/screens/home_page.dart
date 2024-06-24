@@ -25,14 +25,14 @@ class HomePage extends StatelessWidget {
         'index': 2,
       },
       {
-        'icon': Icons.search,
-        'label': 'Rechercher',
+        'icon': Icons.qr_code_scanner,
+        'label': 'Scanner un Qr code',
         'color': Colors.orangeAccent,
         'index': 3,
       },
       {
-        'icon': Icons.qr_code,
-        'label': 'Générer un code QR',
+        'icon': Icons.qr_code_2,
+        'label': 'Générer un Qr code',
         'color': Colors.redAccent,
         'index': 4,
       },

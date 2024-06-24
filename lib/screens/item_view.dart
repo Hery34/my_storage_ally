@@ -80,16 +80,15 @@ class _ItemViewState extends State<ItemView> {
               FloatingActionButton.extended(
                 onPressed: () => goToCreateItemView(),
                 icon: const Icon(Icons.add),
-                label: const Text("Ajouter un Objet"),
+                label: const Text("Ajouter            "),
                 backgroundColor: orangeSa,
               ),
-              IconButton(
-                  iconSize: 45,
-                  onPressed: showSearchDialog,
-                  icon: const Icon(
-                    Icons.search,
-                    color: orangeSa,
-                  ))
+              FloatingActionButton.extended(
+                onPressed: () => showSearchDialog(),
+                icon: const Icon(Icons.search),
+                label: const Text("Rechercher"),
+                backgroundColor: orangeSa,
+              ),
             ],
           ),
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart';
+import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/database/item_database.dart';
+import 'package:my_storage_ally/models/box_model.dart';
 import 'package:my_storage_ally/models/item_model.dart';
 
 class ItemCreateView extends StatefulWidget {
@@ -14,19 +16,23 @@ class ItemCreateView extends StatefulWidget {
 
 class _ItemCreateViewState extends State<ItemCreateView> {
   final database = ItemDatabase(AppDatabase.instance);
+  final boxDatabase = BoxDatabase(AppDatabase.instance);
 
   TextEditingController itemNameController = TextEditingController();
   TextEditingController itemNumberController = TextEditingController();
-  TextEditingController boxController = TextEditingController();
 
   late ItemModel item;
   bool isLoading = false;
   bool isNewItem = false;
   bool isFavorite = false;
 
+  int? selectedBoxId;
+  List<BoxModel> boxes = [];
+
   @override
   void initState() {
     refreshItems();
+    fetchBoxes();
     super.initState();
   }
 
@@ -43,10 +49,15 @@ class _ItemCreateViewState extends State<ItemCreateView> {
         item = value!;
         itemNameController.text = item.itemName;
         itemNumberController.text = item.itemNumber.toString();
-        boxController.text = item.boxId.toString();
+        selectedBoxId = item.boxId;
         isFavorite = item.isFavorite;
       });
     });
+  }
+
+  Future<void> fetchBoxes() async {
+    boxes = await boxDatabase.readAllBoxes();
+    setState(() {});
   }
 
   ///Creates a new note if the isNewNote is true else it updates the existing note
@@ -57,7 +68,7 @@ class _ItemCreateViewState extends State<ItemCreateView> {
     final model = ItemModel(
       itemName: itemNameController.text,
       itemNumber: int.parse(itemNumberController.text),
-      boxId: int.parse(boxController.text),
+      boxId: selectedBoxId,
       isFavorite: isFavorite,
       createdTime: DateTime.now(),
     );
@@ -154,20 +165,26 @@ class _ItemCreateViewState extends State<ItemCreateView> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  TextField(
-                    controller: boxController,
-                    keyboardType: TextInputType.number,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: purpleSa,
-                      fontSize: 20,
+                  DropdownButton<int>(
+                    value: selectedBoxId,
+                    hint: const Text(
+                      'Sélectionnez un carton',
+                      style: TextStyle(color: blueSa),
                     ),
-                    decoration: const InputDecoration(
-                      labelText: 'Carton n°',
-                      labelStyle: TextStyle(
-                        color: blueSa,
-                      ),
-                    ),
+                    items: boxes.map((box) {
+                      return DropdownMenuItem<int>(
+                        value: box.idBox,
+                        child: Text(
+                          box.boxNumber.toString(),
+                          style: const TextStyle(color: purpleSa),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedBoxId = value;
+                      });
+                    },
                   ),
                 ]),
         ),

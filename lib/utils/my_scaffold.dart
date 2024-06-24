@@ -20,7 +20,7 @@ class _MyScaffoldState extends State<MyScaffold> {
     'Accueil',
     'Mes objets',
     'Mes cartons',
-    'Recherche',
+    'Scanner',
     'QR Code',
   ];
 
@@ -74,12 +74,12 @@ class _MyScaffoldState extends State<MyScaffold> {
             label: 'Cartons',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: graySA),
-            label: 'Recherche',
+            icon: Icon(Icons.qr_code_scanner, color: graySA),
+            label: 'Scanner',
           ),
           const BottomNavigationBarItem(
             icon: Icon(
-              Icons.qr_code,
+              Icons.qr_code_2,
               color: graySA,
             ),
             label: 'QR Code',

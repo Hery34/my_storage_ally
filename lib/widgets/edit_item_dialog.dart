@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart';
+import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/database/item_database.dart';
+import 'package:my_storage_ally/models/box_model.dart';
 import 'package:my_storage_ally/models/item_model.dart';
 
 class EditItemDialog extends StatefulWidget {
@@ -17,10 +19,13 @@ class EditItemDialog extends StatefulWidget {
 
 class EditItemDialogState extends State<EditItemDialog> {
   final database = ItemDatabase(AppDatabase.instance);
+  final boxDatabase = BoxDatabase(AppDatabase.instance);
+
   late TextEditingController itemNameController;
   late TextEditingController itemNumberController;
-  late TextEditingController boxController;
+  int? selectedBoxId;
   bool isLoading = false;
+  List<BoxModel> boxes = [];
 
   @override
   void initState() {
@@ -28,7 +33,13 @@ class EditItemDialogState extends State<EditItemDialog> {
     itemNameController = TextEditingController(text: widget.item.itemName);
     itemNumberController =
         TextEditingController(text: widget.item.itemNumber.toString());
-    boxController = TextEditingController(text: widget.item.boxId.toString());
+    selectedBoxId = widget.item.boxId;
+    fetchBoxes();
+  }
+
+  Future<void> fetchBoxes() async {
+    boxes = await boxDatabase.readAllBoxes();
+    setState(() {});
   }
 
   updateItem() async {
@@ -39,7 +50,7 @@ class EditItemDialogState extends State<EditItemDialog> {
       id: widget.item.id,
       itemName: itemNameController.text,
       itemNumber: int.parse(itemNumberController.text),
-      boxId: int.parse(boxController.text),
+      boxId: selectedBoxId,
       isFavorite: widget.item.isFavorite,
       createdTime: widget.item.createdTime,
     );
@@ -101,21 +112,26 @@ class EditItemDialogState extends State<EditItemDialog> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  TextField(
-                    controller: boxController,
-                    keyboardType: TextInputType.number,
-                    maxLength: 8,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: purpleSa,
-                      fontSize: 20,
+                  DropdownButton<int>(
+                    value: selectedBoxId,
+                    hint: const Text(
+                      'Sélectionnez un carton',
+                      style: TextStyle(color: blueSa),
                     ),
-                    decoration: const InputDecoration(
-                      labelText: 'Référence carton',
-                      labelStyle: TextStyle(
-                        color: blueSa,
-                      ),
-                    ),
+                    items: boxes.map((box) {
+                      return DropdownMenuItem<int>(
+                        value: box.idBox,
+                        child: Text(
+                          box.boxNumber.toString(),
+                          style: const TextStyle(color: purpleSa),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedBoxId = value;
+                      });
+                    },
                   ),
                 ],
               ),
