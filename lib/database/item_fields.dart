@@ -4,10 +4,12 @@ class ItemFields {
   static const String itemNameType = 'TEXT NOT NULL';
   static const String itemNumberType = 'INTEGER NOT NULL';
   static const String boxIdType = 'INTEGER';
+  static const String imagePathType = 'TEXT';
   static const String id = 'id';
   static const String itemName = 'item_name';
   static const String itemNumber = 'item_number';
   static const String boxId = 'box_id';
+  static const String imagePath = 'image_path';
   static const String isFavorite = 'is_favorite';
   static const String createdTime = 'created_time';
   static const List<String> values = [
@@ -17,5 +19,6 @@ class ItemFields {
     boxId,
     isFavorite,
     createdTime,
+    imagePath
   ];
 }

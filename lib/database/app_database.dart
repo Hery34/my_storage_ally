@@ -29,6 +29,7 @@ class AppDatabase {
           ${ItemFields.boxId} ${ItemFields.boxIdType},
           ${ItemFields.isFavorite} ${ItemFields.itemNumberType},
           ${ItemFields.createdTime} ${ItemFields.itemNameType},
+          ${ItemFields.imagePath} ${ItemFields.imagePathType},
           FOREIGN KEY (${ItemFields.boxId}) REFERENCES ${BoxFields.tableName} (${BoxFields.id}) ON DELETE CASCADE
         )
       ''');

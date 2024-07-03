@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart';
@@ -28,6 +32,7 @@ class _ItemCreateViewState extends State<ItemCreateView> {
 
   int? selectedBoxId;
   List<BoxModel> boxes = [];
+  File? _imageFile;
 
   @override
   void initState() {
@@ -36,7 +41,6 @@ class _ItemCreateViewState extends State<ItemCreateView> {
     super.initState();
   }
 
-  ///Gets the note from the database and updates the state if the noteId is not null else it sets the isNewNote to true
   refreshItems() {
     if (widget.itemId == null) {
       setState(() {
@@ -46,11 +50,16 @@ class _ItemCreateViewState extends State<ItemCreateView> {
     }
     database.readItem(widget.itemId!).then((value) {
       setState(() {
-        item = value!;
-        itemNameController.text = item.itemName;
-        itemNumberController.text = item.itemNumber.toString();
-        selectedBoxId = item.boxId;
-        isFavorite = item.isFavorite;
+        if (value != null) {
+          item = value;
+          itemNameController.text = item.itemName;
+          itemNumberController.text = item.itemNumber.toString();
+          selectedBoxId = item.boxId;
+          isFavorite = item.isFavorite;
+          if (item.imagePath != null) {
+            _imageFile = File(item.imagePath!);
+          }
+        }
       });
     });
   }
@@ -60,8 +69,23 @@ class _ItemCreateViewState extends State<ItemCreateView> {
     setState(() {});
   }
 
-  ///Creates a new note if the isNewNote is true else it updates the existing note
-  createItem() {
+  Future<void> pickImageFromCamera() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      final directory = await getApplicationDocumentsDirectory();
+      final name = basename(pickedFile.path);
+      final imagePath = join(directory.path, name);
+      final imageFile = File(pickedFile.path);
+      final newImage = await imageFile.copy(imagePath);
+
+      setState(() {
+        _imageFile = newImage;
+      });
+    }
+  }
+
+  createItem(BuildContext context) {
     setState(() {
       isLoading = true;
     });
@@ -71,6 +95,7 @@ class _ItemCreateViewState extends State<ItemCreateView> {
       boxId: selectedBoxId,
       isFavorite: isFavorite,
       createdTime: DateTime.now(),
+      imagePath: _imageFile?.path,
     );
     if (isNewItem) {
       database.createItem(model);
@@ -92,9 +117,11 @@ class _ItemCreateViewState extends State<ItemCreateView> {
     );
   }
 
-  deleteItem() {
-    database.deleteItem(item.id!);
-    Navigator.pop(context);
+  deleteItem(BuildContext context) {
+    if (!isNewItem && item.id != null) {
+      database.deleteItem(item.id!);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -118,13 +145,17 @@ class _ItemCreateViewState extends State<ItemCreateView> {
             visible: !isNewItem,
             child: IconButton(
               color: Colors.red,
-              onPressed: deleteItem,
+              onPressed: () {
+                deleteItem(context);
+              },
               icon: const Icon(Icons.delete),
             ),
           ),
           IconButton(
             color: orangeSa,
-            onPressed: createItem,
+            onPressed: () {
+              createItem(context);
+            },
             icon: const Icon(Icons.save),
           ),
         ],
@@ -134,60 +165,79 @@ class _ItemCreateViewState extends State<ItemCreateView> {
           padding: const EdgeInsets.all(16.0),
           child: isLoading
               ? const Center(child: CircularProgressIndicator())
-              : Column(children: [
-                  TextField(
-                    controller: itemNameController,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: purpleSa,
-                      fontSize: 20,
-                    ),
-                    decoration: const InputDecoration(
-                      labelText: 'Désignation',
-                      labelStyle: TextStyle(
-                        color: blueSa,
+              : Column(
+                  children: [
+                    TextField(
+                      controller: itemNameController,
+                      cursorColor: Colors.white,
+                      style: const TextStyle(
+                        color: purpleSa,
+                        fontSize: 20,
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: itemNumberController,
-                    keyboardType: TextInputType.number,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: purpleSa,
-                      fontSize: 20,
-                    ),
-                    decoration: const InputDecoration(
-                      labelText: 'Nombre',
-                      labelStyle: TextStyle(
-                        color: blueSa,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  DropdownButton<int>(
-                    value: selectedBoxId,
-                    hint: const Text(
-                      'Sélectionnez un carton',
-                      style: TextStyle(color: blueSa),
-                    ),
-                    items: boxes.map((box) {
-                      return DropdownMenuItem<int>(
-                        value: box.idBox,
-                        child: Text(
-                          box.boxNumber,
-                          style: const TextStyle(color: purpleSa),
+                      decoration: const InputDecoration(
+                        labelText: 'Désignation',
+                        labelStyle: TextStyle(
+                          color: blueSa,
                         ),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedBoxId = value;
-                      });
-                    },
-                  ),
-                ]),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: itemNumberController,
+                      keyboardType: TextInputType.number,
+                      cursorColor: Colors.white,
+                      style: const TextStyle(
+                        color: purpleSa,
+                        fontSize: 20,
+                      ),
+                      decoration: const InputDecoration(
+                        labelText: 'Nombre',
+                        labelStyle: TextStyle(
+                          color: blueSa,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    DropdownButton<int>(
+                      value: selectedBoxId,
+                      hint: const Text(
+                        'Sélectionnez un carton',
+                        style: TextStyle(color: blueSa),
+                      ),
+                      items: boxes.map((box) {
+                        return DropdownMenuItem<int>(
+                          value: box.idBox,
+                          child: Text(
+                            box.boxNumber,
+                            style: const TextStyle(color: purpleSa),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedBoxId = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    _imageFile == null
+                        ? const Text(
+                            'Aucune image sélectionnée.',
+                            style: TextStyle(color: blueSa),
+                          )
+                        : Image.file(_imageFile!),
+                    Row(
+                      children: [
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: pickImageFromCamera,
+                            child: const Text('Prendre une photo'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
         ),
       ),
     );

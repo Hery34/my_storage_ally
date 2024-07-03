@@ -7,6 +7,7 @@ class ItemModel {
   final int? boxId;
   final bool isFavorite;
   final DateTime? createdTime;
+  final String? imagePath;
   ItemModel({
     this.id,
     required this.itemName,
@@ -14,6 +15,7 @@ class ItemModel {
     required this.boxId,
     this.isFavorite = false,
     this.createdTime,
+    this.imagePath,
   });
 
   Map<String, Object?> toJson() => {
@@ -23,6 +25,7 @@ class ItemModel {
         ItemFields.boxId: boxId,
         ItemFields.isFavorite: isFavorite ? 1 : 0,
         ItemFields.createdTime: createdTime?.toIso8601String(),
+        ItemFields.imagePath: imagePath,
       };
 
   factory ItemModel.fromJson(Map<String, Object?> json) => ItemModel(
@@ -33,6 +36,7 @@ class ItemModel {
         isFavorite: json[ItemFields.isFavorite] == 1,
         createdTime:
             DateTime.tryParse(json[ItemFields.createdTime] as String? ?? ''),
+        imagePath: json[ItemFields.imagePath] as String?,
       );
 
   ItemModel copy({
@@ -42,6 +46,7 @@ class ItemModel {
     int? boxId,
     bool? isFavorite,
     DateTime? createdTime,
+    String? imagePath,
   }) =>
       ItemModel(
         id: id ?? this.id,
@@ -50,5 +55,6 @@ class ItemModel {
         boxId: boxId ?? this.boxId,
         isFavorite: isFavorite ?? this.isFavorite,
         createdTime: createdTime ?? this.createdTime,
+        imagePath: imagePath ?? this.imagePath,
       );
 }
