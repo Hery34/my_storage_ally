@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart';
@@ -87,30 +89,46 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                 child: Column(
                   children: [
                     Card(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: const Text('Désignation',
-                                style: TextStyle(color: blueSa)),
-                            subtitle: Text(item.itemName,
-                                style: const TextStyle(
-                                    color: purpleSa, fontSize: 20)),
-                          ),
-                          ListTile(
-                            title: const Text('Nombre',
-                                style: TextStyle(color: blueSa)),
-                            subtitle: Text(item.itemNumber.toString(),
-                                style: const TextStyle(
-                                    color: purpleSa, fontSize: 20)),
-                          ),
-                          ListTile(
-                            title: const Text('Carton n°',
-                                style: TextStyle(color: blueSa)),
-                            subtitle: Text(item.boxId.toString(),
-                                style: const TextStyle(
-                                    color: purpleSa, fontSize: 20)),
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: const Text('Désignation',
+                                  style: TextStyle(color: blueSa)),
+                              subtitle: Text(item.itemName,
+                                  style: const TextStyle(
+                                      color: purpleSa, fontSize: 20)),
+                            ),
+                            ListTile(
+                              title: const Text('Nombre',
+                                  style: TextStyle(color: blueSa)),
+                              subtitle: Text(item.itemNumber.toString(),
+                                  style: const TextStyle(
+                                      color: purpleSa, fontSize: 20)),
+                            ),
+                            ListTile(
+                              title: const Text('Carton n°',
+                                  style: TextStyle(color: blueSa)),
+                              subtitle: Text(item.boxId.toString(),
+                                  style: const TextStyle(
+                                      color: purpleSa, fontSize: 20)),
+                            ),
+                            if (item.imagePath != null &&
+                                item.imagePath!.isNotEmpty)
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: blueSa),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Image.file(
+                                  File(item.imagePath!),
+                                  height: 200,
+                                  width: 200,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
