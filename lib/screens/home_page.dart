@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
       },
       {
         'icon': Icons.qr_code_2,
-        'label': 'Générer un Qr code',
+        'label': 'Générer des Qr code',
         'color': Colors.redAccent,
         'index': 4,
       },

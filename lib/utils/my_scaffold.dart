@@ -3,6 +3,7 @@ import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/providers/navigation_provider.dart';
 import 'package:my_storage_ally/screens/box_view.dart';
 import 'package:my_storage_ally/screens/item_view.dart';
+import 'package:my_storage_ally/screens/qr_code_generator_page.dart';
 import 'package:provider/provider.dart';
 
 class MyScaffold extends StatefulWidget {
@@ -98,6 +99,8 @@ class _MyScaffoldState extends State<MyScaffold> {
         return const ItemView();
       case 2:
         return const BoxView();
+      case 4:
+        return QrCodeGeneratorPage();
       default:
         return widget.body;
     }
