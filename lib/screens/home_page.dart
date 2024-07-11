@@ -39,48 +39,71 @@ class HomePage extends StatelessWidget {
     ];
 
     return MyScaffold(
-      body: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.8,
-            maxHeight: MediaQuery.of(context).size.height * 0.6,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade800, Colors.blue.shade200],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          child: GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children: buttons.map((button) {
-              return ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(16.0),
-                  backgroundColor: button['color'] as Color,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.8,
+              maxHeight: MediaQuery.of(context).size.height * 0.6,
+            ),
+            child: GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: buttons.map((button) {
+                return InkWell(
+                  onTap: () {
+                    navigationProvider.setIndex(button['index'] as int);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [button['color'] as Color, Colors.black87],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black45,
+                          blurRadius: 10.0,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          button['icon'] as IconData,
+                          size: 48.0,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          button['label'] as String,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  navigationProvider.setIndex(button['index'] as int);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      button['icon'] as IconData,
-                      size: 48.0,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      button['label'] as String,
-                      style:
-                          const TextStyle(fontSize: 18.0, color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           ),
         ),
       ),

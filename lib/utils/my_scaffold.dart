@@ -29,7 +29,7 @@ class _MyScaffoldState extends State<MyScaffold> {
   Widget build(BuildContext context) {
     final navigationProvider = Provider.of<NavigationProvider>(context);
     return Scaffold(
-      backgroundColor: graySA,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
         title: Row(
@@ -42,51 +42,82 @@ class _MyScaffoldState extends State<MyScaffold> {
             const SizedBox(width: 8),
             Text(
               _titles[navigationProvider.currentIndex],
-              style: const TextStyle(fontSize: 30, color: graySA),
+              style: const TextStyle(fontSize: 30, color: Colors.white),
             ),
           ],
         ),
-        backgroundColor: Colors.grey[700],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue.shade800, Colors.blue.shade200],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 2,
       ),
-      body: _getViewForCurrentIndex(navigationProvider.currentIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: navigationProvider.currentIndex,
-        onTap: (index) {
-          navigationProvider.setIndex(index);
-        },
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: Colors.grey[700],
-            icon: const Icon(Icons.home, color: graySA),
-            label: 'Accueil',
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade800, Colors.blue.shade200],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.storage,
-              color: graySA,
+        ),
+        child: _getViewForCurrentIndex(navigationProvider.currentIndex),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade800, Colors.blue.shade200],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: navigationProvider.currentIndex,
+          onTap: (index) {
+            navigationProvider.setIndex(index);
+          },
+          items: const [
+            BottomNavigationBarItem(
+              backgroundColor: Colors.transparent,
+              icon: Icon(Icons.home, color: Colors.white),
+              label: 'Accueil',
             ),
-            label: 'Objets',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.inventory_2,
-              color: graySA,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.storage,
+                color: Colors.white,
+              ),
+              label: 'Objets',
             ),
-            label: 'Cartons',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code_scanner, color: graySA),
-            label: 'Scanner',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.qr_code_2,
-              color: graySA,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.inventory_2,
+                color: Colors.white,
+              ),
+              label: 'Cartons',
             ),
-            label: 'QR Code',
-          ),
-        ],
-        selectedItemColor: graySA,
+            BottomNavigationBarItem(
+              icon: Icon(Icons.qr_code_scanner, color: Colors.white),
+              label: 'Scanner',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.qr_code_2,
+                color: Colors.white,
+              ),
+              label: 'QR Code',
+            ),
+          ],
+          selectedItemColor: Colors.yellowAccent,
+          unselectedItemColor: Colors.white,
+          backgroundColor: Colors.transparent,
+          type: BottomNavigationBarType.fixed,
+        ),
       ),
     );
   }
@@ -99,6 +130,9 @@ class _MyScaffoldState extends State<MyScaffold> {
         return const ItemView();
       case 2:
         return const BoxView();
+      case 3:
+        // Ajouter la page de scanner ici
+        return Container(); // Remplacer par la page de scanner
       case 4:
         return QrCodeGeneratorPage();
       default:

@@ -62,16 +62,22 @@ class QrCodeGeneratorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Planche de QR Codes Stally'),
+        title: const Text(
+          'Partager ma planche de QR Codes Stally',
+          style: TextStyle(color: Colors.blue, fontSize: 15),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () => _savePdfAndShare(context),
+            color: Colors.blue,
           ),
         ],
       ),
       body: PdfPreview(
         build: (format) => _generatePdf(format),
+        pdfFileName: 'QR_Codes_Stally.pdf',
+        canDebug: false,
       ),
     );
   }

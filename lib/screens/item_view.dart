@@ -32,7 +32,6 @@ class _ItemViewState extends State<ItemView> {
     super.dispose();
   }
 
-  ///Gets all the notes from the database and updates the state
   refreshNotes() {
     database.readAllItems().then((value) {
       setState(() {
@@ -70,102 +69,144 @@ class _ItemViewState extends State<ItemView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              FloatingActionButton.extended(
-                onPressed: () => goToCreateItemView(),
-                icon: const Icon(Icons.add),
-                label: const Text("Ajouter            "),
-                backgroundColor: orangeSa,
-              ),
-              FloatingActionButton.extended(
-                onPressed: () => showSearchDialog(),
-                icon: const Icon(Icons.search),
-                label: const Text("Rechercher"),
-                backgroundColor: orangeSa,
-              ),
-            ],
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue.shade800, Colors.blue.shade200],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        items.isEmpty
-            ? const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    "Vous n'avez aucun objet sauvegardé",
-                    style: TextStyle(color: Colors.red),
+      ),
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                FloatingActionButton.extended(
+                  onPressed: () => goToCreateItemView(),
+                  icon: const Icon(Icons.add),
+                  label: const Text("Ajouter"),
+                  backgroundColor: orangeSa,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
                 ),
-              )
-            : ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  final item = items[index];
-                  return GestureDetector(
-                    onTap: () => goToItemDetailView(id: item.id),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(item.createdTime.toString())}',
+                FloatingActionButton.extended(
+                  onPressed: () => showSearchDialog(),
+                  icon: const Icon(Icons.search),
+                  label: const Text("Rechercher"),
+                  backgroundColor: orangeSa,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          items.isEmpty
+              ? const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
+                      "Vous n'avez aucun objet sauvegardé",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return GestureDetector(
+                      onTap: () => goToItemDetailView(id: item.id),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Card(
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white,
+                                  Colors.grey.shade200,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    child: Text(
-                                      item.itemName,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium,
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(item.createdTime.toString())}',
+                                    style: TextStyle(
+                                      color: Colors.grey.shade800,
                                     ),
                                   ),
-                                  FutureBuilder<String?>(
-                                    future: getBoxName(item.boxId ?? 0),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const CircularProgressIndicator();
-                                      } else if (snapshot.hasError) {
-                                        return const Text('Erreur');
-                                      } else {
-                                        return Text(
-                                          snapshot.data ?? 'Aucun carton',
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.6,
+                                        child: Text(
+                                          item.itemName,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .titleMedium,
-                                        );
-                                      }
-                                    },
+                                              .titleMedium
+                                              ?.copyWith(
+                                                color: Colors.blue.shade800,
+                                              ),
+                                        ),
+                                      ),
+                                      FutureBuilder<String?>(
+                                        future: getBoxName(item.boxId ?? 0),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const CircularProgressIndicator();
+                                          } else if (snapshot.hasError) {
+                                            return const Text('Erreur');
+                                          } else {
+                                            return Text(
+                                              snapshot.data ?? 'Aucun carton',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium
+                                                  ?.copyWith(
+                                                    color: Colors.blue.shade800,
+                                                  ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
-      ],
+                    );
+                  },
+                ),
+        ],
+      ),
     );
   }
 }

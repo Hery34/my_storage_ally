@@ -45,16 +45,18 @@ class EditBoxDialogState extends State<EditBoxDialog> {
       isLoading = false;
     });
     widget.onBoxUpdated();
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        backgroundColor: orangeSa,
-        content: Text(
-          'Objet mis à jour !',
-          style: TextStyle(color: Colors.white),
+    if (mounted) Navigator.of(context).pop();
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: orangeSa,
+          content: Text(
+            'Objet mis à jour !',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override

@@ -64,76 +64,86 @@ class _ItemDetailViewState extends State<ItemDetailView> {
       backgroundColor: graySA,
       appBar: AppBar(
         title: const Text('Détails'),
-        foregroundColor: blueSa,
-        backgroundColor: graySA,
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue.shade800,
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete, color: orangeSa),
+            icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: () {
               deleteItem();
             },
           ),
           IconButton(
-            icon: const Icon(Icons.edit, color: orangeSa),
+            icon: const Icon(Icons.edit, color: Colors.white),
             onPressed: () {
               showEditDialog();
             },
           ),
         ],
       ),
-      body: SafeArea(
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              title: const Text('Désignation',
-                                  style: TextStyle(color: blueSa)),
-                              subtitle: Text(item.itemName,
-                                  style: const TextStyle(
-                                      color: purpleSa, fontSize: 20)),
-                            ),
-                            ListTile(
-                              title: const Text('Nombre',
-                                  style: TextStyle(color: blueSa)),
-                              subtitle: Text(item.itemNumber.toString(),
-                                  style: const TextStyle(
-                                      color: purpleSa, fontSize: 20)),
-                            ),
-                            ListTile(
-                              title: const Text('Carton n°',
-                                  style: TextStyle(color: blueSa)),
-                              subtitle: Text(item.boxId.toString(),
-                                  style: const TextStyle(
-                                      color: purpleSa, fontSize: 20)),
-                            ),
-                            if (item.imagePath != null &&
-                                item.imagePath!.isNotEmpty)
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: blueSa),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Image.file(
-                                  File(item.imagePath!),
-                                  height: 200,
-                                  width: 200,
-                                ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade800, Colors.blue.shade200],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SafeArea(
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title: const Text('Désignation',
+                                    style: TextStyle(color: blueSa)),
+                                subtitle: Text(item.itemName,
+                                    style: TextStyle(
+                                        color: Colors.blue[800], fontSize: 20)),
                               ),
-                          ],
+                              ListTile(
+                                title: const Text('Nombre',
+                                    style: TextStyle(color: blueSa)),
+                                subtitle: Text(item.itemNumber.toString(),
+                                    style: TextStyle(
+                                        color: Colors.blue[800], fontSize: 20)),
+                              ),
+                              ListTile(
+                                title: const Text('Carton n°',
+                                    style: TextStyle(color: blueSa)),
+                                subtitle: Text(item.boxId.toString(),
+                                    style: TextStyle(
+                                        color: Colors.blue[800], fontSize: 20)),
+                              ),
+                              if (item.imagePath != null &&
+                                  item.imagePath!.isNotEmpty)
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Colors.blue.shade800),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Image.file(
+                                    File(item.imagePath!),
+                                    height: 200,
+                                    width: 200,
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
