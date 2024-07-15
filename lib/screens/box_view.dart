@@ -59,6 +59,7 @@ class _BoxViewState extends State<BoxView> {
       decoration: const BoxDecoration(gradient: yellowGradientStally),
       child: ListView(
         children: [
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -76,6 +77,7 @@ class _BoxViewState extends State<BoxView> {
               ],
             ),
           ),
+          const SizedBox(height: 10),
           boxes.isEmpty
               ? const Padding(
                   padding: EdgeInsets.all(8.0),

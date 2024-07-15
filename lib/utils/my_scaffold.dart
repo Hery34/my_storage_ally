@@ -43,16 +43,16 @@ class _MyScaffoldState extends State<MyScaffold> {
             const SizedBox(width: 8),
             Text(
               _titles[navigationProvider.currentIndex],
-              style: const TextStyle(
-                  fontSize: 30, color: Color.fromARGB(255, 54, 2, 2)),
+              style: const TextStyle(fontSize: 30, color: whiteStally),
             ),
           ],
         ),
-        flexibleSpace: Container(
+        /* flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: yellowGradientStally,
           ),
         ),
+        */
         backgroundColor: Colors.transparent,
         elevation: 2,
       ),

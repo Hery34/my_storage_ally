@@ -1,5 +1,5 @@
 name: my_storage_ally
-description: "A new Flutter project."
+description: "This application is a tool to manage your storage and keep track of your items."
 publish_to: 'none'
 
 version: 1.0.0+1
