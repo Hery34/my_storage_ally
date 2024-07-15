@@ -61,11 +61,11 @@ class _ItemDetailViewState extends State<ItemDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: graySA,
+      backgroundColor: brownStally,
       appBar: AppBar(
         title: const Text('Détails'),
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue.shade800,
+        foregroundColor: blackStally,
+        backgroundColor: brownStally,
         actions: [
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
@@ -82,13 +82,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.blue.shade200],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+        decoration: const BoxDecoration(gradient: yellowGradientStally),
         child: SafeArea(
           child: isLoading
               ? const Center(child: CircularProgressIndicator())
@@ -103,31 +97,31 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                             children: [
                               ListTile(
                                 title: const Text('Désignation',
-                                    style: TextStyle(color: blueSa)),
+                                    style: TextStyle(color: blackStally)),
                                 subtitle: Text(item.itemName,
-                                    style: TextStyle(
-                                        color: Colors.blue[800], fontSize: 20)),
+                                    style: const TextStyle(
+                                        color: brownStally, fontSize: 20)),
                               ),
                               ListTile(
                                 title: const Text('Nombre',
-                                    style: TextStyle(color: blueSa)),
+                                    style: TextStyle(color: blackStally)),
                                 subtitle: Text(item.itemNumber.toString(),
-                                    style: TextStyle(
-                                        color: Colors.blue[800], fontSize: 20)),
+                                    style: const TextStyle(
+                                        color: brownStally, fontSize: 20)),
                               ),
                               ListTile(
                                 title: const Text('Carton n°',
-                                    style: TextStyle(color: blueSa)),
+                                    style: TextStyle(color: blackStally)),
                                 subtitle: Text(item.boxId.toString(),
-                                    style: TextStyle(
-                                        color: Colors.blue[800], fontSize: 20)),
+                                    style: const TextStyle(
+                                        color: brownStally, fontSize: 20)),
                               ),
                               if (item.imagePath != null &&
                                   item.imagePath!.isNotEmpty)
                                 Container(
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.blue.shade800),
+                                    border: Border.all(
+                                        color: brownStally, width: 2),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Image.file(

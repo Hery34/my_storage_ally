@@ -63,7 +63,7 @@ class EditBoxDialogState extends State<EditBoxDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Modifier l\'objet'),
+      title: const Text('Modifier le carton'),
       content: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -75,13 +75,13 @@ class EditBoxDialogState extends State<EditBoxDialog> {
                     maxLength: 8,
                     cursorColor: Colors.white,
                     style: const TextStyle(
-                      color: purpleSa,
+                      color: brownStally,
                       fontSize: 20,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Référence',
                       labelStyle: TextStyle(
-                        color: blueSa,
+                        color: blackStally,
                       ),
                     ),
                   ),
@@ -90,13 +90,13 @@ class EditBoxDialogState extends State<EditBoxDialog> {
                     controller: boxDescriptionController,
                     cursorColor: Colors.white,
                     style: const TextStyle(
-                      color: purpleSa,
+                      color: brownStally,
                       fontSize: 20,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Description',
                       labelStyle: TextStyle(
-                        color: blueSa,
+                        color: blackStally,
                       ),
                     ),
                   ),
@@ -113,7 +113,8 @@ class EditBoxDialogState extends State<EditBoxDialog> {
         ),
         TextButton(
           onPressed: updateBox,
-          child: const Text('Sauvegarder', style: TextStyle(color: blueSa)),
+          child:
+              const Text('Sauvegarder', style: TextStyle(color: blackStally)),
         ),
       ],
     );

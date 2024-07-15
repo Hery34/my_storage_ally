@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
 import 'package:my_storage_ally/constants/colors.dart';
@@ -30,7 +29,6 @@ class _BoxViewState extends State<BoxView> {
     super.dispose();
   }
 
-  ///Gets all the notes from the database and updates the state
   refreshNotes() {
     database.readAllBoxes().then((value) {
       setState(() {
@@ -142,7 +140,7 @@ class _BoxViewState extends State<BoxView> {
                                               .textTheme
                                               .titleMedium
                                               ?.copyWith(
-                                                color: coffeeStally,
+                                                color: brownStally,
                                               ),
                                         ),
                                       ],

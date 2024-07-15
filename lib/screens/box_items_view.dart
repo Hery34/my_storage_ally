@@ -29,7 +29,7 @@ class BoxItemsView extends StatelessWidget {
         backgroundColor: brownStally,
         title: const Text(
           'Contenu du carton',
-          style: TextStyle(fontSize: 30, color: Color.fromARGB(255, 54, 2, 2)),
+          style: TextStyle(color: Color.fromARGB(255, 54, 2, 2)),
         ),
       ),
       body: Container(

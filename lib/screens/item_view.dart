@@ -137,7 +137,7 @@ class _ItemViewState extends State<ItemView> {
                               gradient: LinearGradient(
                                 colors: [
                                   Colors.white,
-                                  Colors.grey.shade200,
+                                  Colors.yellow.shade200,
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
@@ -155,8 +155,8 @@ class _ItemViewState extends State<ItemView> {
                                       children: <Widget>[
                                         Text(
                                           'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(item.createdTime.toString())}',
-                                          style: TextStyle(
-                                            color: Colors.grey.shade800,
+                                          style: const TextStyle(
+                                            color: blackStally,
                                           ),
                                         ),
                                         Row(
@@ -176,8 +176,7 @@ class _ItemViewState extends State<ItemView> {
                                                     .textTheme
                                                     .titleMedium
                                                     ?.copyWith(
-                                                      color:
-                                                          Colors.blue.shade800,
+                                                      color: brownStally,
                                                     ),
                                               ),
                                             ),
@@ -198,8 +197,7 @@ class _ItemViewState extends State<ItemView> {
                                                         .textTheme
                                                         .titleMedium
                                                         ?.copyWith(
-                                                          color: Colors
-                                                              .blue.shade800,
+                                                          color: brownStally,
                                                         ),
                                                   );
                                                 }

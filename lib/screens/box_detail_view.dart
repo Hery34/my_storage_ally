@@ -5,6 +5,7 @@ import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 import 'package:my_storage_ally/models/box_model.dart';
 import 'package:my_storage_ally/screens/box_items_view.dart';
+import 'package:my_storage_ally/screens/home_page.dart';
 import 'package:my_storage_ally/widgets/edit_box_dialog.dart';
 
 class BoxDetailView extends StatefulWidget {
@@ -75,22 +76,31 @@ class _BoxDetailViewState extends State<BoxDetailView> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Supprimer le carton'),
+        title: const Text('Supprimer le carton',
+            style: TextStyle(color: brownStally)),
         content: const Text(
-            "Cette action est irréversible. Si vous souhaitez continuer, assurez-vous d'avoir transféré vos objets, sinon ils se retrouveront sans carton"),
+          "Cette action est irréversible. Si vous souhaitez continuer, assurez-vous d'avoir transféré vos objets, sinon ils se retrouveront sans carton",
+          style: TextStyle(color: blackStally),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('Annuler'),
+            child: const Text(
+              'Annuler',
+              style: TextStyle(color: blackStally),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               deleteBox();
             },
-            child: const Text('Supprimer'),
+            child: const Text(
+              'Supprimer',
+              style: TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),
@@ -105,6 +115,12 @@ class _BoxDetailViewState extends State<BoxDetailView> {
         title: const Text('Détails'),
         foregroundColor: blackStally,
         backgroundColor: brownStally,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
@@ -139,14 +155,14 @@ class _BoxDetailViewState extends State<BoxDetailView> {
                                   style: TextStyle(color: blackStally)),
                               subtitle: Text(box.boxNumber,
                                   style: const TextStyle(
-                                      color: coffeeStally, fontSize: 20)),
+                                      color: brownStally, fontSize: 20)),
                             ),
                             ListTile(
                               title: const Text('Description',
                                   style: TextStyle(color: blackStally)),
                               subtitle: Text(box.boxDescription,
                                   style: const TextStyle(
-                                      color: coffeeStally, fontSize: 20)),
+                                      color: brownStally, fontSize: 20)),
                             ),
                           ],
                         ),

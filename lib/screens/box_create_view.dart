@@ -64,7 +64,30 @@ class _BoxCreateViewState extends State<BoxCreateView> {
         });
       }
     } catch (e) {
-      print('Error scanning QR code: $e');
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+              title: const Text(
+                'Une erreur est survenue',
+                style: TextStyle(color: brownStally),
+              ),
+              content: const Text(
+                  "Nous n'avons pas pu scanner le QR Code. Veuillez réessayer."),
+              backgroundColor: blackStally,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(color: blackStally),
+                  ),
+                ),
+              ]),
+        );
+      }
     }
   }
 

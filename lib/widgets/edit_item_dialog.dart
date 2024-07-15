@@ -134,13 +134,13 @@ class EditItemDialogState extends State<EditItemDialog> {
                     controller: itemNameController,
                     cursorColor: Colors.white,
                     style: const TextStyle(
-                      color: purpleSa,
+                      color: brownStally,
                       fontSize: 20,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Désignation',
                       labelStyle: TextStyle(
-                        color: blueSa,
+                        color: blackStally,
                       ),
                     ),
                   ),
@@ -151,13 +151,13 @@ class EditItemDialogState extends State<EditItemDialog> {
                     maxLength: 8,
                     cursorColor: Colors.white,
                     style: const TextStyle(
-                      color: purpleSa,
+                      color: brownStally,
                       fontSize: 20,
                     ),
                     decoration: const InputDecoration(
                       labelText: 'Nombre',
                       labelStyle: TextStyle(
-                        color: blueSa,
+                        color: blackStally,
                       ),
                     ),
                   ),
@@ -166,14 +166,14 @@ class EditItemDialogState extends State<EditItemDialog> {
                     value: selectedBoxId,
                     hint: const Text(
                       'Sélectionnez un carton',
-                      style: TextStyle(color: blueSa),
+                      style: TextStyle(color: blackStally),
                     ),
                     items: boxes.map((box) {
                       return DropdownMenuItem<int>(
                         value: box.idBox,
                         child: Text(
                           box.boxNumber.toString(),
-                          style: const TextStyle(color: purpleSa),
+                          style: const TextStyle(color: brownStally),
                         ),
                       );
                     }).toList(),
@@ -189,12 +189,15 @@ class EditItemDialogState extends State<EditItemDialog> {
                           _image!,
                           height: 200,
                         )
-                      : const Text('Aucune image sélectionnée.'),
+                      : const Text(
+                          'Aucune image sélectionnée.',
+                          style: TextStyle(color: blackStally),
+                        ),
                   TextButton.icon(
                     onPressed: _showImageSourceDialog,
-                    icon: const Icon(Icons.image, color: blueSa),
+                    icon: const Icon(Icons.image, color: brownStally),
                     label: const Text('Ajouter/Modifier la photo',
-                        style: TextStyle(color: blueSa)),
+                        style: TextStyle(color: blackStally)),
                   ),
                 ],
               ),
@@ -208,7 +211,8 @@ class EditItemDialogState extends State<EditItemDialog> {
         ),
         TextButton(
           onPressed: updateItem,
-          child: const Text('Sauvegarder', style: TextStyle(color: blueSa)),
+          child:
+              const Text('Sauvegarder', style: TextStyle(color: blackStally)),
         ),
       ],
     );

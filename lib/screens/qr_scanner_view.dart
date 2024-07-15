@@ -71,7 +71,6 @@ class QRScannerViewState extends State<QRScannerView> {
     try {
       controller?.pauseCamera();
 
-      // Rechercher le boxId à partir du QR code
       final int? boxId = await _getBoxIdFromQRCode(code);
 
       if (boxId != null) {
