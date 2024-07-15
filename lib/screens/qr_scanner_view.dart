@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:my_storage_ally/screens/box_detail_view.dart';
@@ -30,9 +31,6 @@ class QRScannerViewState extends State<QRScannerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Scanner un QR Code'),
-      ),
       body: FutureBuilder<void>(
         future: Future.delayed(const Duration(milliseconds: 500)),
         builder: (context, snapshot) {
@@ -41,7 +39,7 @@ class QRScannerViewState extends State<QRScannerView> {
               key: qrKey,
               onQRViewCreated: _onQRViewCreated,
               overlay: QrScannerOverlayShape(
-                borderColor: Colors.blue,
+                borderColor: brownStally,
                 borderRadius: 10,
                 borderLength: 30,
                 borderWidth: 10,
@@ -77,11 +75,13 @@ class QRScannerViewState extends State<QRScannerView> {
       final int? boxId = await _getBoxIdFromQRCode(code);
 
       if (boxId != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => BoxDetailView(boxId: boxId),
-          ),
-        );
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => BoxDetailView(boxId: boxId),
+            ),
+          );
+        }
       } else {
         _showErrorDialog('QR Code invalide ou non trouvé.');
         setState(() {

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -63,15 +64,15 @@ class QrCodeGeneratorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Partager ma planche de QR Codes Stally',
-          style: TextStyle(color: Colors.blue[800], fontSize: 15),
+          style: TextStyle(color: coffeeStally, fontSize: 15),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () => _savePdfAndShare(context),
-            color: Colors.blue,
+            color: coffeeStally,
           ),
         ],
       ),

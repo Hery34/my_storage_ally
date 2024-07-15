@@ -15,37 +15,33 @@ class HomePage extends StatelessWidget {
       {
         'icon': Icons.storage,
         'label': 'Mes objets',
-        'color': purpleSa,
+        'color': blackStally,
         'index': 1,
       },
       {
         'icon': Icons.inventory_2,
         'label': 'Mes cartons',
-        'color': orangeSa,
+        'color': coffeeStally,
         'index': 2,
       },
       {
         'icon': Icons.qr_code_scanner,
         'label': 'Scanner un Qr code',
-        'color': Colors.orangeAccent,
+        'color': whiteStally,
         'index': 3,
       },
       {
         'icon': Icons.qr_code_2,
         'label': 'Générer des Qr code',
-        'color': Colors.redAccent,
+        'color': brownStally,
         'index': 4,
       },
     ];
 
     return MyScaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.blue.shade200],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+        decoration: const BoxDecoration(
+          gradient: yellowGradientStally,
         ),
         child: Center(
           child: ConstrainedBox(
@@ -67,7 +63,10 @@ class HomePage extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [button['color'] as Color, Colors.black87],
+                        colors: [
+                          button['color'] as Color,
+                          const Color.fromARGB(221, 93, 83, 2)
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),

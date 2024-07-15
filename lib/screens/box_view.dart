@@ -58,13 +58,7 @@ class _BoxViewState extends State<BoxView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.blue.shade800, Colors.blue.shade200],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
+      decoration: const BoxDecoration(gradient: yellowGradientStally),
       child: ListView(
         children: [
           Padding(
@@ -76,7 +70,7 @@ class _BoxViewState extends State<BoxView> {
                   onPressed: () => goToCreateBoxView(),
                   icon: const Icon(Icons.add),
                   label: const Text("Ajouter un Carton"),
-                  backgroundColor: orangeSa,
+                  backgroundColor: brownStally,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -87,11 +81,17 @@ class _BoxViewState extends State<BoxView> {
           boxes.isEmpty
               ? const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                      "Vous n'avez aucun carton sauvegardé",
-                      style: TextStyle(color: Colors.red),
-                    ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.report_gmailerrorred,
+                          size: 100, color: Colors.white),
+                      Center(
+                        child: Text(
+                          "Vous n'avez aucun carton sauvegardé",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : ListView.builder(
@@ -114,7 +114,7 @@ class _BoxViewState extends State<BoxView> {
                               gradient: LinearGradient(
                                 colors: [
                                   Colors.white,
-                                  Colors.grey.shade200,
+                                  Colors.yellow.shade200,
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
@@ -132,8 +132,8 @@ class _BoxViewState extends State<BoxView> {
                                       children: <Widget>[
                                         Text(
                                           'Carton ajouté le : ${FrenchDateFormatter.formatDateFR(box.createdTime.toString())}',
-                                          style: TextStyle(
-                                            color: Colors.grey.shade800,
+                                          style: const TextStyle(
+                                            color: blackStally,
                                           ),
                                         ),
                                         Text(
@@ -142,7 +142,7 @@ class _BoxViewState extends State<BoxView> {
                                               .textTheme
                                               .titleMedium
                                               ?.copyWith(
-                                                color: Colors.blue.shade800,
+                                                color: coffeeStally,
                                               ),
                                         ),
                                       ],

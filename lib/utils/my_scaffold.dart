@@ -5,6 +5,7 @@ import 'package:my_storage_ally/screens/item_view.dart';
 import 'package:my_storage_ally/screens/qr_code_generator_page.dart';
 import 'package:my_storage_ally/screens/qr_scanner_view.dart';
 import 'package:provider/provider.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 
 class MyScaffold extends StatefulWidget {
   final Widget body;
@@ -42,39 +43,28 @@ class _MyScaffoldState extends State<MyScaffold> {
             const SizedBox(width: 8),
             Text(
               _titles[navigationProvider.currentIndex],
-              style: const TextStyle(fontSize: 30, color: Colors.white),
+              style: const TextStyle(
+                  fontSize: 30, color: Color.fromARGB(255, 54, 2, 2)),
             ),
           ],
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue.shade800, Colors.blue.shade200],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+          decoration: const BoxDecoration(
+            gradient: yellowGradientStally,
           ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 2,
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.blue.shade200],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+        decoration: const BoxDecoration(
+          gradient: yellowGradientStally,
         ),
         child: _getViewForCurrentIndex(navigationProvider.currentIndex),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.blue.shade200],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+        decoration: const BoxDecoration(
+          gradient: yellowGradientStally,
         ),
         child: BottomNavigationBar(
           currentIndex: navigationProvider.currentIndex,

@@ -23,23 +23,17 @@ class BoxItemsView extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: graySA,
+      backgroundColor: brownStally,
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue.shade800,
+        foregroundColor: blackStally,
+        backgroundColor: brownStally,
         title: const Text(
           'Contenu du carton',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(fontSize: 30, color: Color.fromARGB(255, 54, 2, 2)),
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.blue.shade200],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+        decoration: const BoxDecoration(gradient: yellowGradientStally),
         child: FutureBuilder<List<ItemModel>>(
           future: itemDatabase.readItemsByBoxId(boxId),
           builder: (context, snapshot) {
@@ -48,7 +42,21 @@ class BoxItemsView extends StatelessWidget {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('Ce carton est vide'));
+              return const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Icon(Icons.report_gmailerrorred,
+                        size: 100, color: Colors.white),
+                    Center(
+                      child: Text(
+                        "Ce carton est vide",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             } else {
               final items = snapshot.data!;
               return ListView.builder(
@@ -75,17 +83,18 @@ class BoxItemsView extends StatelessWidget {
                                 )
                               : Icon(
                                   Icons.image,
-                                  color: Colors.grey.shade400,
+                                  color: Colors.yellow.shade200,
                                   size: 50,
                                 ),
                           title: Text(
                             item.itemName,
-                            style: const TextStyle(fontSize: 20, color: blueSa),
+                            style: const TextStyle(
+                                fontSize: 20, color: blackStally),
                           ),
                           subtitle: Text(
                             'Nombre : ${item.itemNumber}',
-                            style:
-                                const TextStyle(fontSize: 14, color: orangeSa),
+                            style: const TextStyle(
+                                fontSize: 14, color: brownStally),
                           ),
                         ),
                       ),

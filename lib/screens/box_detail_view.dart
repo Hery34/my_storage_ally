@@ -100,11 +100,11 @@ class _BoxDetailViewState extends State<BoxDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: graySA,
+      backgroundColor: brownStally,
       appBar: AppBar(
         title: const Text('Détails'),
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue.shade800,
+        foregroundColor: blackStally,
+        backgroundColor: brownStally,
         actions: [
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
@@ -121,12 +121,8 @@ class _BoxDetailViewState extends State<BoxDetailView> {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.blue.shade200],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+        decoration: const BoxDecoration(
+          gradient: yellowGradientStally,
         ),
         child: SafeArea(
           child: isLoading
@@ -140,17 +136,17 @@ class _BoxDetailViewState extends State<BoxDetailView> {
                           children: [
                             ListTile(
                               title: const Text('Référence',
-                                  style: TextStyle(color: blueSa)),
+                                  style: TextStyle(color: blackStally)),
                               subtitle: Text(box.boxNumber,
-                                  style: TextStyle(
-                                      color: Colors.blue[800], fontSize: 20)),
+                                  style: const TextStyle(
+                                      color: coffeeStally, fontSize: 20)),
                             ),
                             ListTile(
                               title: const Text('Description',
-                                  style: TextStyle(color: blueSa)),
+                                  style: TextStyle(color: blackStally)),
                               subtitle: Text(box.boxDescription,
-                                  style: TextStyle(
-                                      color: Colors.blue[800], fontSize: 20)),
+                                  style: const TextStyle(
+                                      color: coffeeStally, fontSize: 20)),
                             ),
                           ],
                         ),

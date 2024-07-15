@@ -72,13 +72,7 @@ class _ItemViewState extends State<ItemView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.blue.shade800, Colors.blue.shade200],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
+      decoration: const BoxDecoration(gradient: yellowGradientStally),
       child: ListView(
         children: [
           Padding(
@@ -90,7 +84,7 @@ class _ItemViewState extends State<ItemView> {
                   onPressed: () => goToCreateItemView(),
                   icon: const Icon(Icons.add),
                   label: const Text("Ajouter"),
-                  backgroundColor: orangeSa,
+                  backgroundColor: brownStally,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -99,7 +93,7 @@ class _ItemViewState extends State<ItemView> {
                   onPressed: () => showSearchDialog(),
                   icon: const Icon(Icons.search),
                   label: const Text("Rechercher"),
-                  backgroundColor: orangeSa,
+                  backgroundColor: brownStally,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -111,9 +105,15 @@ class _ItemViewState extends State<ItemView> {
               ? const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(
-                      "Vous n'avez aucun objet sauvegardé",
-                      style: TextStyle(color: Colors.red),
+                    child: Column(
+                      children: [
+                        Icon(Icons.report_gmailerrorred,
+                            size: 100, color: Colors.white),
+                        Text(
+                          "Vous n'avez aucun objet sauvegardé",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
                 )

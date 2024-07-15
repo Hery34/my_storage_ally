@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_storage_ally/constants/colors.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRCodeAddingView extends StatefulWidget {
@@ -19,7 +20,7 @@ class _QRCodeAddingViewState extends State<QRCodeAddingView> {
         key: qrKey,
         onQRViewCreated: _onQRViewAdded,
         overlay: QrScannerOverlayShape(
-          borderColor: Colors.blue,
+          borderColor: brownStally,
           borderRadius: 10,
           borderLength: 30,
           borderWidth: 10,

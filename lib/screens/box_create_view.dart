@@ -26,6 +26,7 @@ class _BoxCreateViewState extends State<BoxCreateView> {
   bool isFavorite = false;
 
   final itemDatabase = ItemDatabase(AppDatabase.instance);
+  final _createBoxKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -68,34 +69,40 @@ class _BoxCreateViewState extends State<BoxCreateView> {
   }
 
   createBox() {
-    setState(() {
-      isLoading = true;
-    });
-    final model = BoxModel(
-      boxNumber: (boxNumberController.text),
-      boxDescription: boxDescriptionController.text,
-      isFavorite: isFavorite,
-      createdTime: DateTime.now(),
-      qrCode: scannedQRCode,
-    );
-    if (isNewBox) {
-      database.createBox(model);
-    } else {
-      model.idBox = box.idBox;
-      database.updateBox(model);
-    }
-    setState(() {
-      isLoading = false;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        backgroundColor: orangeSa,
-        content: Text(
-          'Carton rajouté !',
-          style: TextStyle(color: Colors.white),
+    if (_createBoxKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      final model = BoxModel(
+        boxNumber: (boxNumberController.text),
+        boxDescription: boxDescriptionController.text,
+        isFavorite: isFavorite,
+        createdTime: DateTime.now(),
+        qrCode: scannedQRCode,
+      );
+      if (isNewBox) {
+        database.createBox(model);
+      } else {
+        model.idBox = box.idBox;
+        database.updateBox(model);
+      }
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: coffeeStally,
+          content: Text(
+            'Carton rajouté !',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   deleteItem() {
@@ -106,10 +113,10 @@ class _BoxCreateViewState extends State<BoxCreateView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: graySA,
+      backgroundColor: brownStally,
       appBar: AppBar(
-        foregroundColor: blueSa,
-        backgroundColor: graySA,
+        foregroundColor: blackStally,
+        backgroundColor: brownStally,
         actions: [
           IconButton(
             color: blueSa,
@@ -129,7 +136,7 @@ class _BoxCreateViewState extends State<BoxCreateView> {
             ),
           ),
           IconButton(
-            color: orangeSa,
+            color: blackStally,
             onPressed: createBox,
             icon: const Icon(Icons.save),
           ),
@@ -140,42 +147,65 @@ class _BoxCreateViewState extends State<BoxCreateView> {
           padding: const EdgeInsets.all(16.0),
           child: isLoading
               ? const Center(child: CircularProgressIndicator())
-              : Column(children: [
-                  TextField(
-                    controller: boxNumberController,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: purpleSa,
-                      fontSize: 20,
-                    ),
-                    decoration: const InputDecoration(
-                      labelText: 'Référence',
-                      labelStyle: TextStyle(
-                        color: blueSa,
-                      ),
+              : SingleChildScrollView(
+                  child: Form(
+                    key: _createBoxKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: boxNumberController,
+                          cursorColor: Colors.white,
+                          style: const TextStyle(
+                            color: blackStally,
+                            fontSize: 20,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: 'Référence',
+                            labelStyle: TextStyle(
+                              color: coffeeStally,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'La référence ne peut pas être vide';
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          controller: boxDescriptionController,
+                          cursorColor: Colors.white,
+                          style: const TextStyle(
+                            color: blackStally,
+                            fontSize: 20,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: 'Description',
+                            labelStyle: TextStyle(
+                              color: coffeeStally,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'La description ne peut pas être vide';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: scanQRCode,
+                          child: const Text(
+                            'Associer un QR Code',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        if (scannedQRCode.isNotEmpty)
+                          Text('QR Code scanné : $scannedQRCode'),
+                      ],
                     ),
                   ),
-                  TextField(
-                    controller: boxDescriptionController,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: purpleSa,
-                      fontSize: 20,
-                    ),
-                    decoration: const InputDecoration(
-                      labelText: 'Description',
-                      labelStyle: TextStyle(
-                        color: blueSa,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: scanQRCode,
-                    child: const Text('Associer un  QR Code'),
-                  ),
-                  if (scannedQRCode.isNotEmpty)
-                    Text('QR Code scanné : $scannedQRCode'),
-                ]),
+                ),
         ),
       ),
     );

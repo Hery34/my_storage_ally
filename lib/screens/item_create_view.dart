@@ -33,6 +33,7 @@ class _ItemCreateViewState extends State<ItemCreateView> {
   int? selectedBoxId;
   List<BoxModel> boxes = [];
   File? _imageFile;
+  final _createItemKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -86,35 +87,41 @@ class _ItemCreateViewState extends State<ItemCreateView> {
   }
 
   createItem(BuildContext context) {
-    setState(() {
-      isLoading = true;
-    });
-    final model = ItemModel(
-      itemName: itemNameController.text,
-      itemNumber: int.parse(itemNumberController.text),
-      boxId: selectedBoxId,
-      isFavorite: isFavorite,
-      createdTime: DateTime.now(),
-      imagePath: _imageFile?.path,
-    );
-    if (isNewItem) {
-      database.createItem(model);
-    } else {
-      model.id = item.id;
-      database.updateItem(model);
-    }
-    setState(() {
-      isLoading = false;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        backgroundColor: orangeSa,
-        content: Text(
-          'Objet rajouté !',
-          style: TextStyle(color: Colors.white),
+    if (_createItemKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      final model = ItemModel(
+        itemName: itemNameController.text,
+        itemNumber: int.parse(itemNumberController.text),
+        boxId: selectedBoxId,
+        isFavorite: isFavorite,
+        createdTime: DateTime.now(),
+        imagePath: _imageFile?.path,
+      );
+      if (isNewItem) {
+        database.createItem(model);
+      } else {
+        model.id = item.id;
+        database.updateItem(model);
+      }
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: coffeeStally,
+          content: Text(
+            'Objet rajouté !',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   deleteItem(BuildContext context) {
@@ -127,10 +134,10 @@ class _ItemCreateViewState extends State<ItemCreateView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: brownStally,
       appBar: AppBar(
-        foregroundColor: Colors.blue[800],
-        backgroundColor: Colors.white,
+        foregroundColor: blackStally,
+        backgroundColor: brownStally,
         actions: [
           IconButton(
             color: blueSa,
@@ -152,7 +159,7 @@ class _ItemCreateViewState extends State<ItemCreateView> {
             ),
           ),
           IconButton(
-            color: orangeSa,
+            color: blackStally,
             onPressed: () {
               createItem(context);
             },
@@ -165,93 +172,110 @@ class _ItemCreateViewState extends State<ItemCreateView> {
           padding: const EdgeInsets.all(16.0),
           child: isLoading
               ? const Center(child: CircularProgressIndicator())
-              : Column(
-                  children: [
-                    TextField(
-                      controller: itemNameController,
-                      cursorColor: Colors.white,
-                      style: const TextStyle(
-                        color: purpleSa,
-                        fontSize: 20,
-                      ),
-                      decoration: const InputDecoration(
-                        labelText: 'Désignation',
-                        labelStyle: TextStyle(
-                          color: blueSa,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      controller: itemNumberController,
-                      keyboardType: TextInputType.number,
-                      cursorColor: Colors.white,
-                      style: const TextStyle(
-                        color: purpleSa,
-                        fontSize: 20,
-                      ),
-                      decoration: const InputDecoration(
-                        labelText: 'Nombre',
-                        labelStyle: TextStyle(
-                          color: blueSa,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    DropdownButton<int>(
-                      value: selectedBoxId,
-                      hint: const Text(
-                        'Sélectionnez un carton',
-                        style: TextStyle(color: blueSa),
-                      ),
-                      items: boxes.map((box) {
-                        return DropdownMenuItem<int>(
-                          value: box.idBox,
-                          child: Text(
-                            box.boxNumber,
-                            style: const TextStyle(color: purpleSa),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedBoxId = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    _imageFile == null
-                        ? const Text(
-                            'Aucune image sélectionnée.',
-                            style: TextStyle(color: blueSa),
-                          )
-                        : ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.4,
-                            ),
-                            child: Image.file(
-                              _imageFile!,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              : SingleChildScrollView(
+                  child: Form(
+                    key: _createItemKey,
+                    child: Column(
                       children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: blueSa,
+                        TextFormField(
+                          controller: itemNameController,
+                          cursorColor: Colors.white,
+                          style: const TextStyle(
+                            color: blackStally,
+                            fontSize: 20,
                           ),
-                          onPressed: pickImageFromCamera,
-                          child: const Text(
-                            'Prendre une photo',
-                            style: TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Désignation',
+                            labelStyle: TextStyle(
+                              color: coffeeStally,
+                            ),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'La référence ne peut pas être vide';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: itemNumberController,
+                          keyboardType: TextInputType.number,
+                          cursorColor: Colors.white,
+                          style: const TextStyle(
+                            color: blackStally,
+                            fontSize: 20,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: 'Nombre',
+                            labelStyle: TextStyle(
+                              color: coffeeStally,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'La référence ne peut pas être vide';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        DropdownButton<int>(
+                          value: selectedBoxId,
+                          hint: const Text(
+                            'Sélectionnez un carton',
+                            style: TextStyle(color: blackStally),
+                          ),
+                          items: boxes.map((box) {
+                            return DropdownMenuItem<int>(
+                              value: box.idBox,
+                              child: Text(
+                                box.boxNumber,
+                                style: const TextStyle(color: coffeeStally),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedBoxId = value;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        _imageFile == null
+                            ? const Text(
+                                'Aucune image sélectionnée.',
+                                style: TextStyle(color: blackStally),
+                              )
+                            : ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height * 0.4,
+                                ),
+                                child: Image.file(
+                                  _imageFile!,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: coffeeStally,
+                              ),
+                              onPressed: pickImageFromCamera,
+                              child: const Text(
+                                'Prendre une photo',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
         ),
       ),
