@@ -25,6 +25,7 @@ dependencies:
   qr_code_scanner: ^1.0.1
   permission_handler: ^11.3.1
   flutter_barcode_scanner: ^2.0.0
+  intro_slider: ^4.2.1
   
 
 dev_dependencies:
@@ -109,7 +110,7 @@ flutter_native_splash:
     color: "#D1933C"
 
     # App icon background color.
-    #icon_background_color: "#111111"
+    icon_background_color: "#D1933C"
 
     # The branding property allows you to specify an image used as branding in the splash screen.
     #branding: assets/logo.png
