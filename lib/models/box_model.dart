@@ -6,6 +6,7 @@ class BoxModel {
   final String boxDescription;
   final bool isFavorite;
   final DateTime? createdTime;
+  final String qrCode;
 
   BoxModel({
     this.idBox,
@@ -13,6 +14,7 @@ class BoxModel {
     this.boxDescription = '',
     this.isFavorite = false,
     this.createdTime,
+    required this.qrCode,
   });
 
   BoxModel copy({
@@ -21,6 +23,7 @@ class BoxModel {
     String? boxDescription,
     bool? isFavorite,
     DateTime? createdTime,
+    String? qrCode,
   }) =>
       BoxModel(
         idBox: idBox ?? this.idBox,
@@ -28,6 +31,7 @@ class BoxModel {
         boxDescription: boxDescription ?? this.boxDescription,
         isFavorite: isFavorite ?? this.isFavorite,
         createdTime: createdTime ?? this.createdTime,
+        qrCode: qrCode ?? this.qrCode,
       );
 
   Map<String, Object?> toJson() => {
@@ -36,6 +40,7 @@ class BoxModel {
         BoxFields.boxDescription: boxDescription,
         BoxFields.isFavorite: isFavorite ? 1 : 0,
         BoxFields.createdTime: createdTime?.toIso8601String(),
+        BoxFields.qrCode: qrCode,
       };
 
   factory BoxModel.fromJson(Map<String, Object?> json) => BoxModel(
@@ -45,5 +50,6 @@ class BoxModel {
         isFavorite: json[BoxFields.isFavorite] == 1,
         createdTime:
             DateTime.tryParse(json[BoxFields.createdTime] as String? ?? ''),
+        qrCode: json[BoxFields.qrCode] as String,
       );
 }

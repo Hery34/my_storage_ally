@@ -39,6 +39,7 @@ class EditBoxDialogState extends State<EditBoxDialog> {
       boxDescription: boxDescriptionController.text,
       isFavorite: widget.box.isFavorite,
       createdTime: widget.box.createdTime,
+      qrCode: '',
     );
     await database.updateBox(updatedItem);
     setState(() {

@@ -39,7 +39,8 @@ class AppDatabase {
           ${BoxFields.boxNumber} ${BoxFields.boxNumberType},
           ${BoxFields.boxDescription} ${BoxFields.boxDescriptionType},
           ${BoxFields.isFavorite} ${BoxFields.boxNumberType},
-          ${BoxFields.createdTime} ${BoxFields.createdTimeType}
+          ${BoxFields.createdTime} ${BoxFields.createdTimeType},
+          ${BoxFields.qrCode} ${BoxFields.qrCodeType}
         )
       ''');
   }

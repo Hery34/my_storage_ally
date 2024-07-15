@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/item_database.dart';
@@ -23,51 +25,77 @@ class BoxItemsView extends StatelessWidget {
     return Scaffold(
       backgroundColor: graySA,
       appBar: AppBar(
-        backgroundColor: graySA,
-        foregroundColor: blueSa,
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue.shade800,
         title: const Text(
           'Contenu du carton',
-          style: TextStyle(color: blueSa),
+          style: TextStyle(color: Colors.white),
         ),
       ),
-      body: FutureBuilder<List<ItemModel>>(
-        future: itemDatabase.readItemsByBoxId(boxId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Text('Ce carton est vide');
-          } else {
-            final items = snapshot.data!;
-            return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () => goToItemDetailView(id: item.id),
-                    child: Card(
-                      child: ListTile(
-                        style: ListTileStyle.list,
-                        title: Text(
-                          item.itemName,
-                          style: const TextStyle(fontSize: 20, color: blueSa),
-                        ),
-                        subtitle: Text(
-                          'Nombre : ${item.itemNumber}',
-                          style: const TextStyle(fontSize: 14, color: orangeSa),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade800, Colors.blue.shade200],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: FutureBuilder<List<ItemModel>>(
+          future: itemDatabase.readItemsByBoxId(boxId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('Ce carton est vide'));
+            } else {
+              final items = snapshot.data!;
+              return ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  final item = items[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () => goToItemDetailView(id: item.id),
+                      child: Card(
+                        child: ListTile(
+                          style: ListTileStyle.list,
+                          leading: item.imagePath != null &&
+                                  item.imagePath!.isNotEmpty
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.file(
+                                    File(item.imagePath!),
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.image,
+                                  color: Colors.grey.shade400,
+                                  size: 50,
+                                ),
+                          title: Text(
+                            item.itemName,
+                            style: const TextStyle(fontSize: 20, color: blueSa),
+                          ),
+                          subtitle: Text(
+                            'Nombre : ${item.itemNumber}',
+                            style:
+                                const TextStyle(fontSize: 14, color: orangeSa),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          }
-        },
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }

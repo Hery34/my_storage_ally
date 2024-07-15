@@ -77,4 +77,21 @@ class BoxDatabase {
       return null;
     }
   }
+
+  Future<BoxModel?> getBoxByQRCode(String qrCode) async {
+    final db = await _database.database;
+
+    final maps = await db.query(
+      'boxes',
+      columns: BoxFields.values,
+      where: '${BoxFields.qrCode} = ?',
+      whereArgs: [qrCode],
+    );
+
+    if (maps.isNotEmpty) {
+      return BoxModel.fromJson(maps.first);
+    } else {
+      return null;
+    }
+  }
 }

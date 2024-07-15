@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
 import 'package:my_storage_ally/constants/colors.dart';
@@ -56,70 +57,108 @@ class _BoxViewState extends State<BoxView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                width: 50,
-              ),
-              FloatingActionButton.extended(
-                onPressed: () => goToCreateBoxView(),
-                icon: const Icon(Icons.add),
-                label: const Text("Ajouter un Carton"),
-                backgroundColor: orangeSa,
-              ),
-              const SizedBox(
-                width: 50,
-              ),
-            ],
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue.shade800, Colors.blue.shade200],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        boxes.isEmpty
-            ? const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    "Vous n'avez aucun carton sauvegardé",
-                    style: TextStyle(color: Colors.red),
+      ),
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FloatingActionButton.extended(
+                  onPressed: () => goToCreateBoxView(),
+                  icon: const Icon(Icons.add),
+                  label: const Text("Ajouter un Carton"),
+                  backgroundColor: orangeSa,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
                 ),
-              )
-            : ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: boxes.length,
-                itemBuilder: (context, index) {
-                  final box = boxes[index];
-                  return GestureDetector(
-                    onTap: () => goToBoxDetailView(id: box.idBox),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Carton ajouté le : ${FrenchDateFormatter.formatDateFR(box.createdTime.toString())}',
+              ],
+            ),
+          ),
+          boxes.isEmpty
+              ? const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
+                      "Vous n'avez aucun carton sauvegardé",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: boxes.length,
+                  itemBuilder: (context, index) {
+                    final box = boxes[index];
+                    return GestureDetector(
+                      onTap: () => goToBoxDetailView(id: box.idBox),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Card(
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white,
+                                  Colors.grey.shade200,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                              Text(
-                                box.boxNumber.toString(),
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          'Carton ajouté le : ${FrenchDateFormatter.formatDateFR(box.createdTime.toString())}',
+                                          style: TextStyle(
+                                            color: Colors.grey.shade800,
+                                          ),
+                                        ),
+                                        Text(
+                                          box.boxNumber.toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                color: Colors.blue.shade800,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }),
-      ],
+                    );
+                  },
+                ),
+        ],
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:french_date_formatter/french_date_formatter.dart';
 import 'package:my_storage_ally/constants/colors.dart';
@@ -144,58 +146,88 @@ class _ItemViewState extends State<ItemView> {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
                                 children: <Widget>[
-                                  Text(
-                                    'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(item.createdTime.toString())}',
-                                    style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          'Objet ajouté le : ${FrenchDateFormatter.formatDateFR(item.createdTime.toString())}',
+                                          style: TextStyle(
+                                            color: Colors.grey.shade800,
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              child: Text(
+                                                item.itemName,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium
+                                                    ?.copyWith(
+                                                      color:
+                                                          Colors.blue.shade800,
+                                                    ),
+                                              ),
+                                            ),
+                                            FutureBuilder<String?>(
+                                              future:
+                                                  getBoxName(item.boxId ?? 0),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const CircularProgressIndicator();
+                                                } else if (snapshot.hasError) {
+                                                  return const Text('Erreur');
+                                                } else {
+                                                  return Text(
+                                                    snapshot.data ??
+                                                        'Aucun carton',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium
+                                                        ?.copyWith(
+                                                          color: Colors
+                                                              .blue.shade800,
+                                                        ),
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.6,
-                                        child: Text(
-                                          item.itemName,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium
-                                              ?.copyWith(
-                                                color: Colors.blue.shade800,
-                                              ),
-                                        ),
+                                  const SizedBox(width: 8),
+                                  if (item.imagePath != null &&
+                                      item.imagePath!.isNotEmpty)
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        File(item.imagePath!),
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
                                       ),
-                                      FutureBuilder<String?>(
-                                        future: getBoxName(item.boxId ?? 0),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const CircularProgressIndicator();
-                                          } else if (snapshot.hasError) {
-                                            return const Text('Erreur');
-                                          } else {
-                                            return Text(
-                                              snapshot.data ?? 'Aucun carton',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium
-                                                  ?.copyWith(
-                                                    color: Colors.blue.shade800,
-                                                  ),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                    )
+                                  else
+                                    Icon(
+                                      Icons.image,
+                                      color: Colors.grey.shade400,
+                                      size: 50,
+                                    ),
                                 ],
                               ),
                             ),

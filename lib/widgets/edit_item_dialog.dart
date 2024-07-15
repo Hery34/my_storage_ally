@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/database/app_database.dart';
 import 'package:my_storage_ally/database/box_database.dart';
@@ -26,6 +29,7 @@ class EditItemDialogState extends State<EditItemDialog> {
   int? selectedBoxId;
   bool isLoading = false;
   List<BoxModel> boxes = [];
+  File? _image;
 
   @override
   void initState() {
@@ -34,12 +38,54 @@ class EditItemDialogState extends State<EditItemDialog> {
     itemNumberController =
         TextEditingController(text: widget.item.itemNumber.toString());
     selectedBoxId = widget.item.boxId;
+    _image =
+        widget.item.imagePath != null ? File(widget.item.imagePath!) : null;
     fetchBoxes();
   }
 
   Future<void> fetchBoxes() async {
     boxes = await boxDatabase.readAllBoxes();
     setState(() {});
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+  void _showImageSourceDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Choisissez la source de l\'image'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera),
+              title: const Text('Appareil photo'),
+              onTap: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_album),
+              title: const Text('Galerie'),
+              onTap: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   updateItem() async {
@@ -53,22 +99,25 @@ class EditItemDialogState extends State<EditItemDialog> {
       boxId: selectedBoxId,
       isFavorite: widget.item.isFavorite,
       createdTime: widget.item.createdTime,
+      imagePath: _image?.path,
     );
     await database.updateItem(updatedItem);
     setState(() {
       isLoading = false;
     });
     widget.onItemUpdated();
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        backgroundColor: orangeSa,
-        content: Text(
-          'Objet mis à jour !',
-          style: TextStyle(color: Colors.white),
+    if (mounted) Navigator.of(context).pop();
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: orangeSa,
+          content: Text(
+            'Objet mis à jour !',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
@@ -133,6 +182,19 @@ class EditItemDialogState extends State<EditItemDialog> {
                         selectedBoxId = value;
                       });
                     },
+                  ),
+                  const SizedBox(height: 10),
+                  _image != null
+                      ? Image.file(
+                          _image!,
+                          height: 200,
+                        )
+                      : const Text('Aucune image sélectionnée.'),
+                  TextButton.icon(
+                    onPressed: _showImageSourceDialog,
+                    icon: const Icon(Icons.image, color: blueSa),
+                    label: const Text('Ajouter/Modifier la photo',
+                        style: TextStyle(color: blueSa)),
                   ),
                 ],
               ),

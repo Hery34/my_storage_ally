@@ -127,10 +127,10 @@ class _ItemCreateViewState extends State<ItemCreateView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: graySA,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        foregroundColor: blueSa,
-        backgroundColor: graySA,
+        foregroundColor: Colors.blue[800],
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
             color: blueSa,
@@ -225,13 +225,28 @@ class _ItemCreateViewState extends State<ItemCreateView> {
                             'Aucune image sélectionnée.',
                             style: TextStyle(color: blueSa),
                           )
-                        : Image.file(_imageFile!),
+                        : ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.4,
+                            ),
+                            child: Image.file(
+                              _imageFile!,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                    const SizedBox(height: 20),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: pickImageFromCamera,
-                            child: const Text('Prendre une photo'),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: blueSa,
+                          ),
+                          onPressed: pickImageFromCamera,
+                          child: const Text(
+                            'Prendre une photo',
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ],

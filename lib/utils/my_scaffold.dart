@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_storage_ally/constants/colors.dart';
 import 'package:my_storage_ally/providers/navigation_provider.dart';
 import 'package:my_storage_ally/screens/box_view.dart';
 import 'package:my_storage_ally/screens/item_view.dart';
 import 'package:my_storage_ally/screens/qr_code_generator_page.dart';
+import 'package:my_storage_ally/screens/qr_scanner_view.dart';
 import 'package:provider/provider.dart';
 
 class MyScaffold extends StatefulWidget {
@@ -132,7 +132,7 @@ class _MyScaffoldState extends State<MyScaffold> {
         return const BoxView();
       case 3:
         // Ajouter la page de scanner ici
-        return Container(); // Remplacer par la page de scanner
+        return const QRScannerView(); // Remplacer par la page de scanner
       case 4:
         return QrCodeGeneratorPage();
       default:

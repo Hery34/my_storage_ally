@@ -103,57 +103,66 @@ class _BoxDetailViewState extends State<BoxDetailView> {
       backgroundColor: graySA,
       appBar: AppBar(
         title: const Text('Détails'),
-        foregroundColor: blueSa,
-        backgroundColor: graySA,
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue.shade800,
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete, color: orangeSa),
+            icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: () {
               confirmDelete();
             },
           ),
           IconButton(
-            icon: const Icon(Icons.edit, color: orangeSa),
+            icon: const Icon(Icons.edit, color: Colors.white),
             onPressed: () {
               showEditDialog();
             },
           ),
         ],
       ),
-      body: SafeArea(
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Card(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: const Text('Référence',
-                                style: TextStyle(color: blueSa)),
-                            subtitle: Text(box.boxNumber,
-                                style: const TextStyle(
-                                    color: purpleSa, fontSize: 20)),
-                          ),
-                          ListTile(
-                            title: const Text('Description',
-                                style: TextStyle(color: blueSa)),
-                            subtitle: Text(box.boxDescription,
-                                style: const TextStyle(
-                                    color: purpleSa, fontSize: 20)),
-                          ),
-                        ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade800, Colors.blue.shade200],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SafeArea(
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Card(
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: const Text('Référence',
+                                  style: TextStyle(color: blueSa)),
+                              subtitle: Text(box.boxNumber,
+                                  style: TextStyle(
+                                      color: Colors.blue[800], fontSize: 20)),
+                            ),
+                            ListTile(
+                              title: const Text('Description',
+                                  style: TextStyle(color: blueSa)),
+                              subtitle: Text(box.boxDescription,
+                                  style: TextStyle(
+                                      color: Colors.blue[800], fontSize: 20)),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                        onPressed: () => goToBoxContentView(widget.boxId),
-                        child: const Text("Voir le contenu du carton"))
-                  ],
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                          onPressed: () => goToBoxContentView(widget.boxId),
+                          child: const Text("Voir le contenu du carton"))
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }

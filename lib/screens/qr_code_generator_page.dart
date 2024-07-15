@@ -11,11 +11,12 @@ import 'package:share_plus/share_plus.dart';
 class QrCodeGeneratorPage extends StatelessWidget {
   final int numberOfQRCodes = 12;
   final Random random = Random();
+  final DateTime now = DateTime.now();
 
   QrCodeGeneratorPage({super.key});
 
   String generateQRData() {
-    return 'stally${random.nextInt(1000000)}';
+    return 'stally${random.nextInt(1000000)}-${now.millisecondsSinceEpoch}';
   }
 
   Future<Uint8List> _generatePdf(PdfPageFormat format) async {
@@ -62,9 +63,9 @@ class QrCodeGeneratorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Partager ma planche de QR Codes Stally',
-          style: TextStyle(color: Colors.blue, fontSize: 15),
+          style: TextStyle(color: Colors.blue[800], fontSize: 15),
         ),
         actions: [
           IconButton(

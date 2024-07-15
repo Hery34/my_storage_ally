@@ -4,6 +4,7 @@ import 'package:my_storage_ally/database/app_database.dart';
 import 'package:my_storage_ally/database/box_database.dart';
 import 'package:my_storage_ally/database/item_database.dart';
 import 'package:my_storage_ally/models/box_model.dart';
+import 'package:my_storage_ally/screens/qr__code_adding_view.dart';
 
 class BoxCreateView extends StatefulWidget {
   const BoxCreateView({super.key, this.boxId});
@@ -17,6 +18,7 @@ class _BoxCreateViewState extends State<BoxCreateView> {
   final database = BoxDatabase(AppDatabase.instance);
   TextEditingController boxNumberController = TextEditingController();
   TextEditingController boxDescriptionController = TextEditingController();
+  String scannedQRCode = '';
 
   late BoxModel box;
   bool isLoading = false;
@@ -48,6 +50,23 @@ class _BoxCreateViewState extends State<BoxCreateView> {
     });
   }
 
+  Future<void> scanQRCode() async {
+    try {
+      final qrCode = await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const QRCodeAddingView(),
+        ),
+      );
+      if (qrCode != null) {
+        setState(() {
+          scannedQRCode = qrCode;
+        });
+      }
+    } catch (e) {
+      print('Error scanning QR code: $e');
+    }
+  }
+
   createBox() {
     setState(() {
       isLoading = true;
@@ -57,6 +76,7 @@ class _BoxCreateViewState extends State<BoxCreateView> {
       boxDescription: boxDescriptionController.text,
       isFavorite: isFavorite,
       createdTime: DateTime.now(),
+      qrCode: scannedQRCode,
     );
     if (isNewBox) {
       database.createBox(model);
@@ -149,6 +169,12 @@ class _BoxCreateViewState extends State<BoxCreateView> {
                       ),
                     ),
                   ),
+                  ElevatedButton(
+                    onPressed: scanQRCode,
+                    child: const Text('Associer un  QR Code'),
+                  ),
+                  if (scannedQRCode.isNotEmpty)
+                    Text('QR Code scanné : $scannedQRCode'),
                 ]),
         ),
       ),
