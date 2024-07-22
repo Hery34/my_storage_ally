@@ -1,6 +1,6 @@
 # my_storage_ally
 
-A new Flutter project.
+An app to manage a physical storage and an inventory using QrCode
 
 ## Getting Started
 
